@@ -34,7 +34,7 @@ microphone:
     fields:
         sound_level:
             type: int16_t
-            size: 1
+            size: 2
             unit: "mdB"
             description: "Sound level in dB"
 
