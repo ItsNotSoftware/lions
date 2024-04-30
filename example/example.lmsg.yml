@@ -1,0 +1,51 @@
+# Example of a messag containig floats
+accelerometer:
+    id: 0x01
+    checksum: true # if true, a checksum will be added to the message
+    period: 1000 # time in (ms), used if you want to send the message periodically
+    description: "Accelerometer data" # description of the message
+
+    fields:
+        acc_x:
+            type: float
+            size: 4
+            unit: "m/s^2"
+            description: "Acceleration in x-axis m/s^2"
+
+        acc_y:
+            type: float
+            size: 4
+            unit: "m/s^2"
+            description: "Acceleration in y-axis m/s^2"
+
+        acc_z:
+            type: float
+            size: 4
+            unit: "m/s^2"
+            description: "Acceleration in z-axis m/s^2"
+
+# Example of a message with a string payload
+microphone:
+    id: 0x02
+    checksum: true
+    period: 0
+    description: "Microphone data"
+
+    fields:
+        sound_level:
+            type: int16_t
+            size: 1
+            unit: "mdB"
+            description: "Sound level in dB"
+
+        message:
+            type: string # C style encoded string
+            size: 100 # maximum size of the string + 1 for the null terminator
+            description: "Speach-to-text message"
+
+# Example of a message with no payload
+ping:
+    id: 0x03
+    checksum: false
+    period: 1000
+    description: "Ping message"
