@@ -1,7 +1,6 @@
 # Example of a messag containig floats
 accelerometer:
     id: 0x01
-    checksum: true # if true, a checksum will be added to the message
     period: 1000 # time in (ms), used if you want to send the message periodically
     description: "Accelerometer data" # description of the message
 
@@ -27,7 +26,6 @@ accelerometer:
 # Example of a message with a string payload
 microphone:
     id: 0x02
-    checksum: true
     period: 0
     description: "Microphone data"
 
@@ -46,6 +44,5 @@ microphone:
 # Example of a message with no payload
 ping:
     id: 0x03
-    checksum: false
     period: 1000
     description: "Ping message"
