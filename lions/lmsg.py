@@ -3,34 +3,34 @@ from pydantic import BaseModel, field_validator
 used_ids = []  # List to store the used IDs
 
 
-class Field(BaseModel):
+class MsgField(BaseModel):
     """Class to represent a field in a LMsg"""
 
     name: str
     type: str
     size: int
 
-    @field_validator("type", "size")
+    @field_validator("type")
     @classmethod
-    def validate_args(cls, values: dict):
+    def validate_args(cls, v: str):
         """
         Validate the size of the field based on the type
 
         Args:
-            cls (Field): Field class
-            values (dict): Dictionary containing the field values
+            cls (MsgField): MsgField class
+            v (str): string containing the field v
 
         Raises:
             ValueError: If the type is invalid
 
 
         Returns:
-            dict: Dictionary containing the field values
+            str: string containing the field v
         """
 
         # Check if the type is valid
-        if values["type"] not in [
-            "string",
+        if v not in [
+            "str",
             "bool",
             "uint8_t",
             "uint16_t",
@@ -43,21 +43,31 @@ class Field(BaseModel):
             "float",
             "double",
         ]:
-            raise ValueError(f"Invalid type on field {values['name']}")
+            raise ValueError(f"Invalid type on field {v}")
 
-        # Check if the size is valid for the given type
-        if values["type"] in ["bool", "uint8_t", "int8_t"] and values["size"] != 1:
-            raise ValueError("Size must be 1 for bool, uint8_t and int8_t fields")
-        if values["type"] in ["uint16_t", "int16_t"] and values["size"] != 2:
-            raise ValueError("Size must be 2 for uint16_t and int16_t fields")
-        if values["type"] in ["uint32_t", "int32_t", "float"] and values["size"] != 4:
-            raise ValueError("Size must be 4 for uint32_t, int32_t and float fields")
-        if values["type"] in ["uint64_t", "int64_t", "double"] and values["size"] != 8:
-            raise ValueError("Size must be 8 for uint64_t, int64_t and double fields")
-        if values["type"] == "string" and values["size"] <= 0:
-            raise ValueError("Size must be greater than 0 for stringo fields")
+        return v
 
-        return values
+    @field_validator("size")
+    @classmethod
+    def validate_size(cls, v: int):
+        """
+        Validate the size of the field based on the type
+
+        Args:
+            cls (MsgField): MsgField class
+            v (int): size of the field
+
+        Raises:
+            ValueError: If the size is invalid for the type
+
+        Returns:
+            int: size of the field
+        """
+
+        if v < 0:
+            raise ValueError("Size must be greater than 0")
+
+        return v
 
 
 class LMsg(BaseModel):
@@ -66,7 +76,7 @@ class LMsg(BaseModel):
     id: int
     name: str
     period: int
-    fields: list[Field]
+    fields: list[MsgField]
 
     @field_validator("id")
     @classmethod
@@ -98,7 +108,7 @@ class LMsg(BaseModel):
 
     @field_validator("fields")
     @classmethod
-    def validate_payload_size(cls, fields: list[Field]):
+    def validate_payload_size(cls, fields: list[MsgField]):
         """
         Validate the payload size of the LMsg
 
