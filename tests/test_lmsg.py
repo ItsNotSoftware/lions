@@ -1,12 +1,12 @@
 import pytest
-from lions.lmsg import LMsg, MsgField, used_ids
+from lions.lmsg import LMsg, MsgField, _used_ids
 
 
-# Decorator to clear used_ids list after each test
+# Decorator to clear _used_ids list after each test
 def clear_used_ids(func):
     def wrapper(*args, **kwargs):
         result = func(*args, **kwargs)
-        used_ids.clear()
+        _used_ids.clear()
         return result
 
     return wrapper

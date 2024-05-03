@@ -1,6 +1,6 @@
 from pydantic import BaseModel, field_validator
 
-used_ids = []  # List to store the used IDs
+_used_ids = []  # List to store the used IDs
 
 
 class MsgField(BaseModel):
@@ -96,14 +96,14 @@ class LMsg(BaseModel):
         """
 
         # Check if the ID is already in use
-        if value in used_ids:
+        if value in _used_ids:
             raise ValueError(f"ID {value} is already in use")
 
         # Check if the ID is out of bounds
         if value < 0 or value > 255:
             raise ValueError("ID must be between 0 and 255")
 
-        used_ids.append(value)
+        _used_ids.append(value)
         return value
 
     @field_validator("fields")

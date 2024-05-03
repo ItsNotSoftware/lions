@@ -1,0 +1,16 @@
+microphone:
+    id: 0x02
+    period: 0
+    description: "Microphone data"
+
+    fields:
+        sound_level:
+            type: int16_t
+            size: 2
+            unit: "mdB"
+            description: "Sound level in dB"
+
+        message:
+            type: string
+            size: 100
+            description: "Speach-to-text message"
