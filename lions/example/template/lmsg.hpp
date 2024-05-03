@@ -5,16 +5,24 @@
 
 namespace lions {
 struct Header {
-    uint8_t src_id;
-    uint8_t dst_id;
+    uint8_t src;
+    uint8_t dst;
+    uint8_t next_hop;
     uint8_t msg_id;
-    uint8_t msg_len;
-    uint16_t checksum;
 };
 
-struct LMsg {
+class LMsg {
+   public:
     Header header;
     uint8_t payload[248];
+
+    LMsg(uint8_t payload_size);
+    uint16_t calculate_checksum();
+    bool valid_checksum();
+
+   private:
+    uint8_t payload_size;
+    uint16_t checksum;
 };
 
 enum class msg_id {
@@ -22,9 +30,6 @@ enum class msg_id {
     MICROPHONE = 0x02,
     PING = 0x03,
 };
-
-uint16_t calculate_checksum(Header header, uint8_t* payload);
-bool valid_checksum(Header header, uint8_t* payload);
 
 }  // namespace lions
 
