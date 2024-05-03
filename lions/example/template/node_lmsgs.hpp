@@ -6,6 +6,15 @@
 #include "lmsg.hpp"
 
 namespace lions {
+
+namespace msg_id {
+
+constexpr uint8_t ACCELEROMETER = 0x01;
+constexpr uint8_t MICROPHONE = 0x02;
+constexpr uint8_t PING = 0x03;
+
+}  // namespace msg_id
+
 class AccelerometerMsg {
    public:
     Header header;

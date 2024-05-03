@@ -25,12 +25,6 @@ class LMsg {
     uint16_t checksum;
 };
 
-enum class msg_id {
-    ACCELEROMETER = 0x01,
-    MICROPHONE = 0x02,
-    PING = 0x03,
-};
-
 }  // namespace lions
 
 #endif
