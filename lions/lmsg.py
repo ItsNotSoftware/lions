@@ -30,7 +30,7 @@ class MsgField(BaseModel):
 
         # Check if the type is valid
         if v not in [
-            "str",
+            "string",
             "bool",
             "uint8_t",
             "uint16_t",

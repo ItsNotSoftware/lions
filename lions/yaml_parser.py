@@ -87,7 +87,7 @@ class YamlParser:
 
             # Iterate over each message in the file
             for msg_name, msg_data in data.items():
-                lmsg_list = self.yamlMsg_to_LMsg(msg_name, msg_data)
+                lmsg_list.append(self.yamlMsg_to_LMsg(msg_name, msg_data))
 
             # Return the filename and the LMsg object for each file one at a time
             yield filename, lmsg_list
