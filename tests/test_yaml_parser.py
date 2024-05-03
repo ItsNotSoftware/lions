@@ -30,10 +30,14 @@ def test_single_lmsg_file():
 
     assert len(results) == 1
 
+    _used_ids.clear()
+
     f1 = MsgField(name="acc_x", type="float", size=4)
     f2 = MsgField(name="acc_y", type="float", size=4)
     f3 = MsgField(name="acc_z", type="float", size=4)
 
     answer = LMsg(id=1, name="accelerometer", period=1000, fields=[f1, f2, f3])
 
-    assert results[0] == answer
+    filename, r = results[0]
+    assert filename == "single"
+    assert r == answer

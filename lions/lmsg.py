@@ -97,7 +97,7 @@ class LMsg(BaseModel):
 
         # Check if the ID is already in use
         if value in _used_ids:
-            raise ValueError(f"ID {value} is already in use")
+            raise ValueError(f"Mesage ID {value} is already in use")
 
         # Check if the ID is out of bounds
         if value < 0 or value > 255:
