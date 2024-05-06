@@ -1,0 +1,4 @@
+ping:
+    id: 0x03
+    period: 1000
+    description: "Ping message"
