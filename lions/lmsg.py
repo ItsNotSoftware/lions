@@ -1,5 +1,5 @@
 from pydantic import BaseModel, field_validator
-from lions.errors import UsedIdError
+from lions.errors import DuplicateIdError
 
 _used_ids = []  # List to store the used IDs
 
@@ -98,7 +98,7 @@ class LMsg(BaseModel):
 
         # Check if the ID is already in use
         if value in _used_ids:
-            raise UsedIdError
+            raise DuplicateIdError(value)
 
         # Check if the ID is out of bounds
         if value < 0 or value > 255:

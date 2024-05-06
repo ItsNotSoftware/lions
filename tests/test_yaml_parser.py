@@ -2,7 +2,7 @@ import pytest
 
 from lions.yaml_parser import YamlParser
 from lions.lmsg import LMsg, MsgField, _used_ids
-from lions.errors import UsedIdError
+from lions.errors import *
 
 
 # Decorator to clear _used_ids list after each test
@@ -17,7 +17,7 @@ def clear_used_ids(func):
 
 @clear_used_ids
 def test_invalid_dir():
-    with pytest.raises(UsedIdError):
+    with pytest.raises(FileNotFoundError):
         YamlParser("tests/test_files")
 
 
@@ -98,7 +98,7 @@ def test_multiple_lmsg_files():
 def test_invalid_lsg_file():
     parser = YamlParser("tests/test_files/invalid_lmsg_file")
 
-    with pytest.raises(ValueError):
+    with pytest.raises(MissingFieldError):
         for filename, r in parser.parse_file():
             _used_ids.clear()
 

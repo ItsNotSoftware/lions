@@ -1,5 +1,6 @@
 import pytest
 from lions.lmsg import LMsg, MsgField, _used_ids
+from lions.errors import *
 
 
 # Decorator to clear _used_ids list after each test
@@ -36,7 +37,7 @@ def test_invalid_lmsg_id():
 @clear_used_ids
 def test_duplicate_lmsg_id():
     LMsg(id=1, name="Test", period=100, fields=[])
-    with pytest.raises(ValueError):
+    with pytest.raises(DuplicateIdError):
         LMsg(id=1, name="Test2", period=200, fields=[])
 
 

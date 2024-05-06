@@ -39,7 +39,7 @@ class YamlParser:
                 file_data[filename] = yaml.safe_load(open(f"{msg_files_dir}/{file}"))
 
         if len(file_data) == 0:
-            raise ValueError(f"No lmsg.yaml files found in {msg_files_dir}")
+            raise FileNotFoundError(f"No lmsg.yaml files found in {msg_files_dir}")
 
         return file_data
 

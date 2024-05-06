@@ -5,6 +5,6 @@ class MissingFieldError(Exception):
         )
 
 
-class UsedIdError(Exception):
+class DuplicateIdError(Exception):
     def __init__(self, id):
         super().__init__(f'ID "{id}" is already in use')
