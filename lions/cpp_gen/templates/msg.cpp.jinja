@@ -1,0 +1,46 @@
+#include "{filename}.hpp"
+
+#include <algorithm>
+#include <string>
+
+namespace lions {
+{% for message in messages %}
+class {{ message.name }}Msg {
+public:
+    // Constructor from LMsg
+    {{ message.name }}Msg(const LMsg& msg) {
+        header = msg.header;
+        {% for field in message.fields %}
+        {% if field.type == 'string' %}
+        {{ field.name }} = std::string(reinterpret_cast<const char*>(&msg.payload[{{ field.offset }}]), {{ field.size }});
+        {% else %}
+        {{ field.name }} = *reinterpret_cast<const {{ field.type }}*>(&msg.payload[{{ field.offset }}]);
+        {% endif %}
+        {% endfor %}
+    }
+
+    // Encode to LMsg
+    LMsg encode(const uint8_t src, const uint8_t dst, const uint8_t next_hop) {
+        LMsg msg({{ message.payload_size }});
+
+        msg.header.src = src;
+        msg.header.dst = dst;
+        msg.header.next_hop = next_hop;
+        msg.header.msg_id = static_cast<uint8_t>(msg_id::{{ message.msg_id }});
+
+        {% for field in message.encode_fields %}
+        {% if field.type == 'string' %}
+        std::copy({{ field.name }}.begin(), {{ field.name }}.end(), msg.payload + {{ field.offset }});
+        {% else %}
+        *reinterpret_cast<{{ field.type }}*>(&msg.payload[{{ field.offset }}]) = {{ field.name }};
+        {% endif %}
+        {% endfor %}
+
+        msg.calculate_checksum();
+
+        return msg;
+    }
+};
+
+{% endfor %}
+}  // namespace lions

@@ -3,16 +3,14 @@
 
 #include <string>
 
-#include "lmsg.hpp"
+#include "lions.hpp"
 
 namespace lions {
 
 namespace msg_id {
-
 constexpr uint8_t ACCELEROMETER = 0x01;
 constexpr uint8_t MICROPHONE = 0x02;
 constexpr uint8_t PING = 0x03;
-
 }  // namespace msg_id
 
 class AccelerometerMsg {
@@ -35,14 +33,14 @@ class MicrophoneMsg {
     std::string message;
 
     MicrophoneMsg(const LMsg &msg);
-    LMsg encode();
+    LMsg encode(const uint8_t src, const uint8_t dst, const uint8_t next_hop);
 };
 class PingMsg {
    public:
     Header header;
 
     PingMsg(const LMsg &msg);
-    LMsg encode();
+    LMsg encode(const uint8_t src, const uint8_t dst, const uint8_t next_hop);
 };
 
 }  // namespace lions

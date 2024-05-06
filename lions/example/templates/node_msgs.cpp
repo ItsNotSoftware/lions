@@ -1,4 +1,4 @@
-#include "node_lmsgs.hpp"
+#include "node_msgs.hpp"
 
 #include <algorithm>
 
@@ -30,15 +30,15 @@ LMsg AccelerometerMsg::encode(const uint8_t src, const uint8_t dst, const uint8_
 MicrophoneMsg::MicrophoneMsg(const LMsg& msg) {
     header = msg.header;
     sound_level = *reinterpret_cast<const float*>(&msg.payload[0]);
-    message = std::string(reinterpret_cast<const char*>(&msg.payload[4]), 248);
+    message = std::string(reinterpret_cast<const char*>(&msg.payload[4]), 244);
 }
 
-LMsg MicrophoneMsg::encode() {
-    LMsg msg(252);
+LMsg MicrophoneMsg::encode(const uint8_t src, const uint8_t dst, const uint8_t next_hop) {
+    LMsg msg(248);
 
-    msg.header.src = header.src;
-    msg.header.dst = header.dst;
-    msg.header.next_hop = header.next_hop;
+    msg.header.src = src;
+    msg.header.dst = dst;
+    msg.header.next_hop = next_hop;
     msg.header.msg_id = static_cast<uint8_t>(msg_id::MICROPHONE);
 
     *reinterpret_cast<float*>(&msg.payload[0]) = sound_level;
@@ -51,16 +51,17 @@ LMsg MicrophoneMsg::encode() {
 
 PingMsg::PingMsg(const LMsg& msg) { header = msg.header; }
 
-LMsg PingMsg::encode() {
+LMsg PingMsg::encode(const uint8_t src, const uint8_t dst, const uint8_t next_hop) {
     LMsg msg(0);
 
-    msg.header.src = header.src;
-    msg.header.dst = header.dst;
-    msg.header.next_hop = header.next_hop;
+    msg.header.src = src;
+    msg.header.dst = dst;
+    msg.header.next_hop = next_hop;
     msg.header.msg_id = static_cast<uint8_t>(msg_id::PING);
 
     msg.calculate_checksum();
 
     return msg;
 }
+
 }  // namespace lions
