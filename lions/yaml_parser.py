@@ -83,6 +83,10 @@ class YamlParser:
 
         # Iterate over each file
         for filename, data in self.file_data.items():
+            # Ignore empty files
+            if not data:
+                continue
+
             lmsg_list = []
 
             # Iterate over each message in the file
