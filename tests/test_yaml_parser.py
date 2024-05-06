@@ -2,6 +2,7 @@ import pytest
 
 from lions.yaml_parser import YamlParser
 from lions.lmsg import LMsg, MsgField, _used_ids
+from lions.errors import UsedIdError
 
 
 # Decorator to clear _used_ids list after each test
@@ -16,7 +17,7 @@ def clear_used_ids(func):
 
 @clear_used_ids
 def test_invalid_dir():
-    with pytest.raises(ValueError):
+    with pytest.raises(UsedIdError):
         YamlParser("tests/test_files")
 
 
@@ -77,7 +78,6 @@ def test_multiple_lmsg_files():
         _used_ids.clear()
 
         if filename == "a":
-            # ************ file a ***************
             f1 = MsgField(name="acc_x", type="float", size=4)
             f2 = MsgField(name="acc_y", type="float", size=4)
             f3 = MsgField(name="acc_z", type="float", size=4)
@@ -88,8 +88,20 @@ def test_multiple_lmsg_files():
             assert r[1] == answer
 
         elif filename == "b":
-            # ************ file b ***************
             f1 = MsgField(name="sound_level", type="int16_t", size=2)
             f2 = MsgField(name="message", type="string", size=100)
             answer = LMsg(id=2, name="microphone", period=0, fields=[f1, f2])
             assert r[0] == answer
+
+
+@clear_used_ids
+def test_invalid_lsg_file():
+    parser = YamlParser("tests/test_files/invalid_lmsg_file")
+
+    with pytest.raises(ValueError):
+        for filename, r in parser.parse_file():
+            _used_ids.clear()
+
+            if filename == "valid":
+                answer = LMsg(id=3, name="ping", period=1000, fields=[])
+                assert r[0] == answer

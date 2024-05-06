@@ -3,6 +3,7 @@ import os
 
 from lions.lmsg import LMsg, MsgField
 from typing import Generator
+from lions.errors import MissingFieldError
 
 
 class YamlParser:
@@ -51,13 +52,21 @@ class YamlParser:
             msg_name (str): Name of the message
             msg_data (dict): Dictionary containing the message data
 
+        Raises:
+            ValueError: If a required key is missing in the message data
+
         Returns:
             LMsg: LMsg object
 
         """
-        id = msg_data["id"]
-        name = msg_name
-        period = msg_data["period"]
+        try:
+            id = msg_data["id"]
+            name = msg_name
+            period = msg_data["period"]
+        except KeyError as e:
+            key = e.args[0]
+            raise MissingFieldError(key, msg_name)
+
         fields = []
 
         # If the message has fields iterate over them
