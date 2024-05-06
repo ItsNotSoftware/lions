@@ -24,3 +24,5 @@ bin/
 # Ignore system-specific files
 *.swp
 *~
+
+test/output/*
