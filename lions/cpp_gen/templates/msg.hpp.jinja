@@ -2,22 +2,21 @@
 #define {{filename | upper}}_HPP
 
 #include "lions.hpp"
+#include <string>
+
 
 namespace lions {
 
 namespace msg_id {
-{% for msg in msgs %}
-constexpr uint8_t {{msg.name|upper}} = {{msg.id}};
-{% endfor %}
-}  // namespace msg_id
+{% for msg in msgs %}   constexpr uint8_t {{msg.name|upper}} = {{msg.id}};
+{% endfor %} }  // namespace msg_id
 
 {% for msg in msgs %}
 class {{msg.name}}Msg {
    public:
     Header header;
     {% for field in msg.fields %}
-    {{field.type}} {{field.name}};
-    {% endfor %}
+    {{field.type}} {{field.name}};{% endfor %}
 
     {{msg.name}}Msg(const LMsg &msg);
     LMsg encode(const uint8_t src, const uint8_t dst, const uint8_t next_hop);

@@ -51,6 +51,11 @@ class CppGenerator:
         # Dictionary to pass to the jinja templates
         jinja_dict = {"filename": filename, "msgs": msgs}
 
+        for msg in msgs:
+            for field in msg.fields:
+                if field.type == "string":
+                    field.type = "std::string"
+
         with open(f"{file}.hpp", "w") as f_hpp, open(f"{file}.cpp", "w") as f_cpp:
             f_hpp.write(self.msg_hpp_template.render(jinja_dict))  # hpp
             f_cpp.write(self.msg_cpp_template.render(jinja_dict))  # cpp

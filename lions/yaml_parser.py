@@ -72,9 +72,13 @@ class YamlParser:
         # If the message has fields iterate over them
         if msg_data.get("fields") is not None:
             for field_name_, field_data in msg_data["fields"].items():
-                field_name = field_name_
-                field_type = field_data["type"]
-                field_size = field_data["size"]
+                try:
+                    field_name = field_name_
+                    field_type = field_data["type"]
+                    field_size = field_data["size"]
+                except KeyError as e:
+                    key = e.args[0]
+                    raise MissingFieldError(key, field_name_)
 
                 fields.append(
                     MsgField(name=field_name, type=field_type, size=field_size)
