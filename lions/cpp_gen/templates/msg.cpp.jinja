@@ -4,38 +4,36 @@
 
 namespace lions {
 {% for msg in msgs %}
-class {{ msg.name }}Msg {
-public:
-    {{ msg.name  | capitalize }}Msg(const LMsg& msg) {
-        Header header = msg.header;
-        {% for field in msg.fields %}
-        {% if field.type == 'std::string' %}
-        {{ field.name }} = std::string(reinterpret_cast<const char*>(&msg.payload[{{ field.offset }}]), {{ field.size }});
-        {% else %}
-        {{ field.name }} = *reinterpret_cast<const {{ field.type }}*>(&msg.payload[{{ field.offset }}]);
-        {% endif %}
-        {% endfor %}
-    }
+{{ msg.name  | capitalize }}Msg::{{ msg.name  | capitalize }}Msg(const LMsg &msg) {
+    Header header = msg.header;
+    {% for field in msg.fields %}
+    {% if field.type == 'std::string' %}
+    {{ field.name }} = std::string(reinterpret_cast<const char*>(&msg.payload[{{ field.offset }}]), {{ field.size }});
+    {% else %}
+    {{ field.name }} = *reinterpret_cast<const {{ field.type }}*>(&msg.payload[{{ field.offset }}]);
+    {% endif %}
+{% endfor %}
+}
 
-    LMsg encode(const uint8_t src, const uint8_t dst, const uint8_t next_hop) {
-        LMsg msg({{ msg.payload_size }});
+LMsg {{ msg.name  | capitalize }}Msg::encode(const uint8_t src, const uint8_t dst, const uint8_t next_hop) {
+    LMsg msg({{ msg.payload_size }});
 
-        msg.header.src = src;
-        msg.header.dst = dst;
-        msg.header.next_hop = next_hop;
-        msg.header.msg_id = static_cast<uint8_t>(msg_id::{{ msg.msg_id }});
+    msg.header.src = src;
+    msg.header.dst = dst;
+    msg.header.next_hop = next_hop;
+    msg.header.msg_id = static_cast<uint8_t>(msg_id::{{ msg.msg_id }});
 
-        {% for field in msg.encode_fields %}
-        {% if field.type == 'std::string' %}
-        std::copy({{ field.name }}.begin(), {{ field.name }}.end(), msg.payload + {{ field.offset }});
-        {% else %}
-        *reinterpret_cast<{{ field.type }}*>(&msg.payload[{{ field.offset }}]) = {{ field.name }};
-        {% endif %}
-        {% endfor %}
+    {% for field in msg.encode_fields %}
+    {% if field.type == 'std::string' %}
+    std::copy({{ field.name }}.begin(), {{ field.name }}.end(), msg.payload + {{ field.offset }});
+    {% else %}
+    *reinterpret_cast<{{ field.type }}*>(&msg.payload[{{ field.offset }}]) = {{ field.name }};
+    {% endif %}
+    {% endfor %}
 
-        msg.calculate_checksum();
+    msg.calculate_checksum();
 
-        return msg;
+    return msg;
     }
 };
 

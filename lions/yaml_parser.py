@@ -2,7 +2,7 @@ import yaml
 
 from lions.lmsg import LMsg, MsgField
 from typing import Generator
-from lions.errors import MissingFieldError
+from lions.errors import MissingFieldError, InvalidTypeSize
 import os
 
 
@@ -17,6 +17,36 @@ class YamlParser:
             msg_files_dir (str): Directory containing the lmsg.yaml files
         """
         self.file_data = self.get_file_data(msg_files_dir)
+
+    @staticmethod
+    def validate_type_size(msg_name: str, field_name, type: str, size: int):
+        """
+        Validate the size of the field based on the type
+
+        Args:
+            msg_name (str): Name of the message
+            field_name (str): Name of the field
+            type (str): Type of the field
+            size (int): Size of the field
+
+        Raises:
+            InvalidTypeSize: If the size is invalid for the given type
+        """
+
+        if type == "string" and size <= 1:
+            raise InvalidTypeSize(msg_name, field_name, type, size)
+
+        if type in ["bool", "uint8_t", "int8_t"] and size != 1:
+            raise InvalidTypeSize(msg_name, field_name, type, size)
+
+        if type in ["uint16_t", "int16_t"] and size != 2:
+            raise InvalidTypeSize(msg_name, field_name, type, size)
+
+        if type in ["uint32_t", "int32_t", "float"] and size != 4:
+            raise InvalidTypeSize(msg_name, field_name, type, size)
+
+        if type in ["uint64_t", "int64_t", "double"] and size != 8:
+            raise InvalidTypeSize(msg_name, field_name, type, size)
 
     @staticmethod
     def get_file_data(msg_files_dir: str) -> dict[str, dict]:
@@ -68,6 +98,7 @@ class YamlParser:
             raise MissingFieldError(key, msg_name)
 
         fields = []
+        start = 0
 
         # If the message has fields iterate over them
         if msg_data.get("fields") is not None:
@@ -76,6 +107,13 @@ class YamlParser:
                     field_name = field_name_
                     field_type = field_data["type"]
                     field_size = field_data["size"]
+
+                    YamlParser.validate_type_size(
+                        msg_name, field_name, field_type, field_size
+                    )
+
+                    start += field_size
+
                 except KeyError as e:
                     key = e.args[0]
                     raise MissingFieldError(key, field_name_)
