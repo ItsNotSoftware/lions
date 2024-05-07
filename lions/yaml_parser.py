@@ -2,7 +2,7 @@ import yaml
 
 from lions.lmsg import LMsg, MsgField
 from typing import Generator
-from lions.errors import MissingFieldError, InvalidTypeSize
+from lions.errors import MissingFieldError, InvalidTypeSizeError
 import os
 
 
@@ -30,23 +30,23 @@ class YamlParser:
             size (int): Size of the field
 
         Raises:
-            InvalidTypeSize: If the size is invalid for the given type
+            InvalidTypeSizeError: If the size is invalid for the given type
         """
 
         if type == "string" and size <= 1:
-            raise InvalidTypeSize(msg_name, field_name, type, size)
+            raise InvalidTypeSizeError(msg_name, field_name, type, size)
 
         if type in ["bool", "uint8_t", "int8_t"] and size != 1:
-            raise InvalidTypeSize(msg_name, field_name, type, size)
+            raise InvalidTypeSizeError(msg_name, field_name, type, size)
 
         if type in ["uint16_t", "int16_t"] and size != 2:
-            raise InvalidTypeSize(msg_name, field_name, type, size)
+            raise InvalidTypeSizeError(msg_name, field_name, type, size)
 
         if type in ["uint32_t", "int32_t", "float"] and size != 4:
-            raise InvalidTypeSize(msg_name, field_name, type, size)
+            raise InvalidTypeSizeError(msg_name, field_name, type, size)
 
         if type in ["uint64_t", "int64_t", "double"] and size != 8:
-            raise InvalidTypeSize(msg_name, field_name, type, size)
+            raise InvalidTypeSizeError(msg_name, field_name, type, size)
 
     @staticmethod
     def get_file_data(msg_files_dir: str) -> dict[str, dict]:

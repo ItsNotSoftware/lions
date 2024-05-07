@@ -10,7 +10,7 @@ class DuplicateIdError(Exception):
         super().__init__(f'ID "{id}" is already in use')
 
 
-class InvalidTypeSize(Exception):
+class InvalidTypeSizeError(Exception):
     def __init__(self, msg_name, field_name, type, size):
         expected_sizes = {
             "bool": 1,

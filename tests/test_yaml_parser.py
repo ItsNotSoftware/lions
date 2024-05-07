@@ -111,7 +111,7 @@ def test_invalid_lmsg_file():
 def test_invalid_field_size():
     parser = YamlParser("tests/test_files/invalid_field_size")
 
-    with pytest.raises(InvalidTypeSize):
+    with pytest.raises(InvalidTypeSizeError):
         for filename, r in parser.parse_file():
             _used_ids.clear()
 
