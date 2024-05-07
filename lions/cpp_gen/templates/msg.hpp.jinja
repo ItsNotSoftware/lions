@@ -12,7 +12,7 @@ namespace msg_id {
 {% endfor %}}  // namespace msg_id
 
 {% for msg in msgs %}
-class {{msg.name}}Msg {
+class {{msg.name | capitalize }}Msg {
    public:
     Header header;
     {% for field in msg.fields %}

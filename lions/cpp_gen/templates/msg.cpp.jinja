@@ -6,7 +6,7 @@ namespace lions {
 {% for msg in msgs %}
 class {{ msg.name }}Msg {
 public:
-    {{ msg.name }}Msg(const LMsg& msg) {
+    {{ msg.name  | capitalize }}Msg(const LMsg& msg) {
         Header header = msg.header;
         {% for field in msg.fields %}
         {% if field.type == 'std::string' %}
