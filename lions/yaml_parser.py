@@ -89,6 +89,8 @@ class YamlParser:
             LMsg: LMsg object
 
         """
+
+        # Extract the required fields from the message data
         try:
             id = msg_data["id"]
             name = msg_name
@@ -98,11 +100,13 @@ class YamlParser:
             raise MissingFieldError(key, msg_name)
 
         fields = []
-        start = 0
+        start = 0  # Start index for the first field
 
         # If the message has fields iterate over them
         if msg_data.get("fields") is not None:
             for field_name_, field_data in msg_data["fields"].items():
+
+                # Extract the field data
                 try:
                     field_name = field_name_
                     field_type = field_data["type"]
@@ -112,15 +116,16 @@ class YamlParser:
                         msg_name, field_name, field_type, field_size
                     )
 
-                    start += field_size
-
                 except KeyError as e:
                     key = e.args[0]
                     raise MissingFieldError(key, field_name_)
 
                 fields.append(
-                    MsgField(name=field_name, type=field_type, size=field_size)
+                    MsgField(
+                        name=field_name, type=field_type, size=field_size, start=start
+                    )
                 )
+                start += field_size  # Update the start index for the next field
 
         return LMsg(id=id, name=msg_name, period=period, fields=fields)
 

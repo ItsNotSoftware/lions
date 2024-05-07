@@ -126,3 +126,7 @@ class LMsg(BaseModel):
             raise ValueError("Payload size must be less than or equal to 248 bytes")
 
         return fields
+
+    @property
+    def payload_size(self):
+        return sum(field.size for field in self.fields)
