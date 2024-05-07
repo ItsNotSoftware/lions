@@ -26,3 +26,5 @@ bin/
 *~
 
 test/output/*
+lions.egg-info/
+output/

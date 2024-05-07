@@ -1,9 +1,9 @@
 import yaml
-import os
 
 from lions.lmsg import LMsg, MsgField
 from typing import Generator
 from lions.errors import MissingFieldError
+import os
 
 
 class YamlParser:
