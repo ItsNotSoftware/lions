@@ -10,7 +10,7 @@ class MsgField(BaseModel):
     name: str
     type: str
     size: int
-    start: int
+    start: int = 0
 
     @field_validator("type")
     @classmethod
