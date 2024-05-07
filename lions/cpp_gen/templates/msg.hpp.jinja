@@ -9,7 +9,7 @@ namespace lions {
 
 namespace msg_id {
 {% for msg in msgs %}   constexpr uint8_t {{msg.name|upper}} = {{msg.id}};
-{% endfor %} }  // namespace msg_id
+{% endfor %}}  // namespace msg_id
 
 {% for msg in msgs %}
 class {{msg.name}}Msg {
