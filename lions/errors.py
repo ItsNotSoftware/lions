@@ -12,6 +12,6 @@ class DuplicateIdError(Exception):
 
 class InvalidTypeSize(Exception):
     def __init__(self, msg_name, field_name, type, size):
-        super().__init(
+        super().__init__(
             f'Invalid size "{size}" for type "{type}" in field "{field_name}" in message "{msg_name}"'
         )
