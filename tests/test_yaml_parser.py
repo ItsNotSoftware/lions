@@ -33,9 +33,9 @@ def test_single_lmsg_file1():
 
     _used_ids.clear()
 
-    f1 = MsgField(name="acc_x", type="float", size=4)
-    f2 = MsgField(name="acc_y", type="float", size=4)
-    f3 = MsgField(name="acc_z", type="float", size=4)
+    f1 = MsgField(name="acc_x", type="float", size=4, start=0)
+    f2 = MsgField(name="acc_y", type="float", size=4, start=4)
+    f3 = MsgField(name="acc_z", type="float", size=4, start=8)
 
     answer = LMsg(id=1, name="accelerometer", period=1000, fields=[f1, f2, f3])
 
@@ -53,15 +53,15 @@ def test_single_lmsg_file2():
     _used_ids.clear()
 
     # ************ msg 1 ***************
-    f1 = MsgField(name="acc_x", type="float", size=4)
-    f2 = MsgField(name="acc_y", type="float", size=4)
-    f3 = MsgField(name="acc_z", type="float", size=4)
+    f1 = MsgField(name="acc_x", type="float", size=4, start=0)
+    f2 = MsgField(name="acc_y", type="float", size=4, start=4)
+    f3 = MsgField(name="acc_z", type="float", size=4, start=8)
     answer = LMsg(id=1, name="accelerometer", period=1000, fields=[f1, f2, f3])
     assert r[0] == answer
 
     # ************ msg 2 ***************
-    f1 = MsgField(name="sound_level", type="int16_t", size=2)
-    f2 = MsgField(name="message", type="string", size=100)
+    f1 = MsgField(name="sound_level", type="int16_t", size=2, start=0)
+    f2 = MsgField(name="message", type="string", size=100, start=2)
     answer = LMsg(id=2, name="microphone", period=0, fields=[f1, f2])
     assert r[1] == answer
 
@@ -78,9 +78,9 @@ def test_multiple_lmsg_files():
         _used_ids.clear()
 
         if filename == "a":
-            f1 = MsgField(name="acc_x", type="float", size=4)
-            f2 = MsgField(name="acc_y", type="float", size=4)
-            f3 = MsgField(name="acc_z", type="float", size=4)
+            f1 = MsgField(name="acc_x", type="float", size=4, start=0)
+            f2 = MsgField(name="acc_y", type="float", size=4, start=4)
+            f3 = MsgField(name="acc_z", type="float", size=4, start=8)
             answer = LMsg(id=1, name="accelerometer", period=1000, fields=[f1, f2, f3])
             assert r[0] == answer
 
@@ -88,8 +88,8 @@ def test_multiple_lmsg_files():
             assert r[1] == answer
 
         elif filename == "b":
-            f1 = MsgField(name="sound_level", type="int16_t", size=2)
-            f2 = MsgField(name="message", type="string", size=100)
+            f1 = MsgField(name="sound_level", type="int16_t", size=2, start=0)
+            f2 = MsgField(name="message", type="string", size=100, start=2)
             answer = LMsg(id=2, name="microphone", period=0, fields=[f1, f2])
             assert r[0] == answer
 
