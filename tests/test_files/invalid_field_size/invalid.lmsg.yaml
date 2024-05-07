@@ -1,0 +1,24 @@
+# Example of a messag containig floats
+accelerometer:
+    id: 0x01
+    period: 1000 # time in (ms), used if you want to send the message periodically
+    description: "Accelerometer data" # description of the message
+
+    fields:
+        acc_x:
+            type: float
+            size: 4
+            unit: "m/s^2"
+            description: "Acceleration in x-axis m/s^2"
+
+        acc_y:
+            type: float
+            size: 2
+            unit: "m/s^2"
+            description: "Acceleration in y-axis m/s^2"
+
+        acc_z:
+            type: float
+            size: 4
+            unit: "m/s^2"
+            description: "Acceleration in z-axis m/s^2"

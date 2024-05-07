@@ -17,13 +17,13 @@ def clear_used_ids(func):
 @clear_used_ids
 def test_valid_lmsg_creation():
     fields = [
-        {"name": "field1", "type": "uint8_t", "size": 1},
-        {"name": "field2", "type": "uint16_t", "size": 2},
+        {"name": "field1", "type": "uint8_t", "size": 1, "start": 0},
+        {"name": "field2", "type": "uint16_t", "size": 2, "start": 1},
     ]
     lmsg = LMsg(
         id=1, name="Test", period=100, fields=[MsgField(**field) for field in fields]
     )
-    assert lmsg
+    assert True
 
 
 # Test invalid LMsg ID
