@@ -42,7 +42,7 @@ LMsg {{ msg.name  | capitalize }}Msg::encode(const uint8_t src, const uint8_t ds
     msg.header.msg_id = static_cast<uint8_t>(msg_id::{{msg.name | upper}});
 
     {% for field in msg.fields%}{% if field.type == 'std::string' %}std::copy({{ field.name }}.begin(), {{ field.name }}.end(), msg.payload + {{ field.start }});
-    {% else %}*reinterpret_cast<{{ field.type }}*>(&msg.payload[{{ field.start }}]) = {{ field.size }};{% endif %}
+    {% else %}*reinterpret_cast<{{ field.type }}*>(&msg.payload[{{ field.start }}]) = {{ field.name }};{% endif %}
     {% endfor %}msg.calculate_checksum();
     
     return msg;
