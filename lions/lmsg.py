@@ -1,7 +1,8 @@
 from pydantic import BaseModel, field_validator, model_validator
-from lions.errors import DuplicateIdError
+from lions.errors import *
 
 _used_ids = []  # List to store the used IDs
+_used_names = []  # List to store the used names
 
 
 class MsgField(BaseModel):
@@ -98,9 +99,33 @@ class LMsg(BaseModel):
 
         # Check if the ID is out of bounds
         if self.id < 0 or self.id > 255:
-            raise ValueError("ID must be between 0 and 255")
+            raise OutOfBoundIdError(self.name, self.id)
 
         _used_ids.append(self.id)
+
+    @field_validator("name")
+    @classmethod
+    def validate_name(cls, v: str):
+        """
+        Validate the name of the LMsg
+
+        Args:
+            cls (LMsg): LMsg class
+            v (str): string containing the name
+
+        Raises:
+            DuplicateMsgNameError: If the name is already in use
+
+        Returns:
+            str: string containing the name
+        """
+
+        if v in _used_names:
+            raise DuplicateMsgNameError(v)
+
+        _used_names.append(v)
+
+        return v
 
     @field_validator("fields")
     @classmethod

@@ -1,6 +1,14 @@
 from colorama import Fore, Style
 
 
+class OutOfBoundIdError(Exception):
+    def __init__(self, msg_name, id):
+        super().__init__(
+            Fore.RED
+            + f'ID "{id}" out of bounds in message "{msg_name}". ID must be between 0 and 255'
+        )
+
+
 class MissingFieldError(Exception):
     def __init__(self, field, message_name):
         super().__init__(
@@ -14,6 +22,11 @@ class DuplicateIdError(Exception):
             Fore.RED
             + f'Duplicate ID "{id}" in message "{name}". Suggested free ID: "{sugested_id}"'
         )
+
+
+class DuplicateMsgNameError(Exception):
+    def __init__(self, name):
+        super().__init__(Fore.RED + f'Duplicate message name "{name}"')
 
 
 class InvalidTypeSizeError(Exception):

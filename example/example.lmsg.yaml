@@ -1,6 +1,6 @@
 # Example of a messag containig floats
 accelerometer:
-    id: 0x01
+    id: 600
     period: 1000 # time in (ms), used if you want to send the message periodically
     description: "Accelerometer data" # description of the message
 
