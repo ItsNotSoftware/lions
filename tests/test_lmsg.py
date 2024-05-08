@@ -17,8 +17,20 @@ def reset(func):
 @reset
 def test_valid_lmsg_creation():
     fields = [
-        {"name": "field1", "type": "uint8_t", "size": 1, "start": 0},
-        {"name": "field2", "type": "uint16_t", "size": 2, "start": 1},
+        {
+            "parent_msg_name": "msg1",
+            "name": "field1",
+            "type": "uint8_t",
+            "size": 1,
+            "start": 0,
+        },
+        {
+            "parent_msg_name": "msg1",
+            "name": "field2",
+            "type": "uint16_t",
+            "size": 2,
+            "start": 1,
+        },
     ]
     lmsg = LMsg(
         id=1, name="Test", period=100, fields=[MsgField(**field) for field in fields]
@@ -52,7 +64,7 @@ def test_lmsg_id_out_of_bounds():
 # Test valid field creation
 @reset
 def test_valid_field_creation():
-    field = MsgField(name="field1", type="uint8_t", size=1)
+    field = MsgField(parent_msg_name="msg", name="field1", type="uint8_t", size=1)
     assert field
 
 
@@ -73,11 +85,24 @@ def test_invalid_field_size_for_type():
 # Test invalid payload size
 @reset
 def test_invalid_payload_size():
-    fields = [
-        {"name": f"field{i}", "type": "uint8_t", "size": 1} for i in range(250)
-    ]  # Total payload size > 248
     with pytest.raises(ValueError):
-        LMsg(
+        fields = [
+            {
+                "parent_msg_name": "msg1",
+                "name": "field1",
+                "type": "string",
+                "size": 230,
+                "start": 0,
+            },
+            {
+                "parent_msg_name": "msg1",
+                "name": "field2",
+                "type": "string",
+                "size": 240,
+                "start": 1,
+            },
+        ]
+        lmsg = LMsg(
             id=1,
             name="Test",
             period=100,
@@ -89,7 +114,8 @@ def test_invalid_payload_size():
 @reset
 def test_valid_payload_size():
     fields = [
-        {"name": f"field{i}", "type": "uint8_t", "size": 1} for i in range(10)
+        {"parent_msg_name": "msg1", "name": f"field{i}", "type": "uint8_t", "size": 1}
+        for i in range(10)
     ]  # Total payload size <= 248
     lmsg = LMsg(
         id=1, name="Test", period=100, fields=[MsgField(**field) for field in fields]
