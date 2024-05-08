@@ -122,7 +122,7 @@ class YamlParser:
 
                 except KeyError as e:
                     key = e.args[0]
-                    raise MissingFieldError(key, field_name_)
+                    raise MissingFieldError(key, msg_name + "/" + field_name_)
 
                 fields.append(
                     MsgField(

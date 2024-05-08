@@ -1,6 +1,6 @@
 # Example of a messag containig floats
 accelerometer:
-    id: 600
+    id: 1
     period: 1000 # time in (ms), used if you want to send the message periodically
     description: "Accelerometer data" # description of the message
 
@@ -22,7 +22,7 @@ accelerometer:
 
 # Example of a message with a string payload
 microphone:
-    id: 0x02
+    id: 2
     period: 0
     description: "Microphone data"
 
@@ -39,6 +39,6 @@ microphone:
 
 # Example of a message with no payload
 ping:
-    id: 0x03
+    id: 3
     period: 1000
     description: "Ping message"
