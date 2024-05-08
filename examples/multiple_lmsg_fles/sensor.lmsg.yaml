@@ -1,0 +1,30 @@
+# Sensor message definition
+accelerometer:
+    id: 1
+    period: 1000
+    description: "Accelerometer data"
+
+    fields:
+        acc_x:
+            type: float
+            size: 4
+            description: "Acceleration in x-axis m/s^2"
+
+        acc_y:
+            type: float
+            size: 4
+            description: "Acceleration in y-axis m/s^2"
+
+        acc_z:
+            type: float
+            size: 4
+            description: "Acceleration in z-axis m/s^2"
+battery:
+    id: 2
+    period: 0
+
+    fields:
+        soc:
+            type: uint8_t
+            size: 1
+            description: "Battery %"

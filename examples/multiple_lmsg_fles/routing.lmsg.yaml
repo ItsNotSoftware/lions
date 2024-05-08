@@ -1,0 +1,72 @@
+# Routing protocol message definition
+hello:
+    id: 10
+    period: 1000
+    description: "Accelerometer data"
+
+ack:
+    id: 11
+    period: 0
+    description: "Message acknowledgment"
+
+join:
+    id: 12
+    period: 0
+    description: "Join message"
+
+    fields:
+        node_id:
+            type: uint8_t
+            size: 1
+            description: "Node ID"
+
+        node_type:
+            type: uint8_t
+            size: 1
+            description: "Node type"
+
+        node_name:
+            type: string
+            size: 20
+            description: "Node name"
+
+        node_location:
+            type: string
+            size: 20
+            description: "Node location"
+
+        node_description:
+            type: string
+            size: 100
+            description: "Node description"
+
+leave:
+    id: 13
+    period: 0
+    description: "Leave message"
+
+    fields:
+        node_id:
+            type: uint8_t
+            size: 1
+            description: "Node ID"
+
+        node_type:
+            type: uint8_t
+            size: 1
+            description: "Node type"
+
+        node_name:
+            type: string
+            size: 20
+            description: "Node name"
+
+        node_location:
+            type: string
+            size: 20
+            description: "Node location"
+
+        node_description:
+            type: string
+            size: 100
+            description: "Node description"
