@@ -126,7 +126,11 @@ class YamlParser:
 
                 fields.append(
                     MsgField(
-                        name=field_name, type=field_type, size=field_size, start=start
+                        parent_msg_name=name,
+                        name=field_name,
+                        type=field_type,
+                        size=field_size,
+                        start=start,
                     )
                 )
                 start += field_size  # Update the start index for the next field

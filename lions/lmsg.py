@@ -8,47 +8,11 @@ _used_names = []  # List to store the used names
 class MsgField(BaseModel):
     """Class to represent a field in a LMsg"""
 
+    parent_msg_name: str
     name: str
     type: str
     size: int
     start: int = 0
-
-    @field_validator("type")
-    @classmethod
-    def validate_type(cls, v: str):
-        """
-        Validate the size of the field based on the type
-
-        Args:
-            cls (MsgField): MsgField class
-            v (str): string containing the field v
-
-        Raises:
-            ValueError: If the type is invalid
-
-
-        Returns:
-            str: string containing the field v
-        """
-
-        # Check if the type is valid
-        if v not in [
-            "string",
-            "bool",
-            "uint8_t",
-            "uint16_t",
-            "uint32_t",
-            "uint64_t",
-            "int8_t",
-            "int16_t",
-            "int32_t",
-            "int64_t",
-            "float",
-            "double",
-        ]:
-            raise ValueError(f"Invalid type on field {v}")
-
-        return v
 
     @field_validator("size")
     @classmethod
@@ -71,6 +35,26 @@ class MsgField(BaseModel):
             raise ValueError("Size must be greater than 0")
 
         return v
+
+    @model_validator(mode="after")
+    def validate_type(self):
+        if self.type not in [
+            "bool",
+            "int8_t",
+            "uint8_t",
+            "int16_t",
+            "uint16_t",
+            "int32_t",
+            "uint32_t",
+            "int64_t",
+            "uint64_t",
+            "float",
+            "double",
+            "string",
+        ]:
+            raise InvalidTypeError(self.parent_msg_name, self.name, self.type)
+
+        return self
 
 
 class LMsg(BaseModel):
