@@ -29,6 +29,12 @@ namespace lions {
    constexpr uint8_t MICROPHONE = 2;
    constexpr uint8_t PING = 3;
    }  // namespace msg_id
+   
+   namespace msg_period {
+   constexpr uint8_t ACCELEROMETER = 1000;
+   constexpr uint8_t MICROPHONE = 0;
+   constexpr uint8_t PING = 1000;
+   }  // namespace msg_id
 
 
 class AccelerometerMsg {

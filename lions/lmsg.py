@@ -99,7 +99,7 @@ class LMsg(BaseModel):
 
         # Check if the ID is out of bounds
         if self.id < 0 or self.id > 255:
-            raise OutOfBoundIdError(self.name, self.id)
+            raise OutOfBoundsIdError(self.name, self.id)
 
         _used_ids.append(self.id)
 

@@ -1,27 +1,27 @@
 import pytest
 
 from lions.yaml_parser import YamlParser
-from lions.lmsg import LMsg, MsgField, _used_ids
+from lions.lmsg import LMsg, MsgField, _used_ids, _used_names
 from lions.errors import *
 
 
-# Decorator to clear _used_ids list after each test
-def clear_used_ids(func):
+def reset(func):
     def wrapper(*args, **kwargs):
         result = func(*args, **kwargs)
         _used_ids.clear()
+        _used_names.clear()
         return result
 
     return wrapper
 
 
-@clear_used_ids
+@reset
 def test_invalid_dir():
     with pytest.raises(FileNotFoundError):
         YamlParser("tests/test_files")
 
 
-@clear_used_ids
+@reset
 def test_single_lmsg_file1():
     parser = YamlParser("tests/test_files/single_lmsg_file1")
 
@@ -32,6 +32,7 @@ def test_single_lmsg_file1():
     assert len(results) == 1
 
     _used_ids.clear()
+    _used_names.clear()
 
     f1 = MsgField(name="acc_x", type="float", size=4, start=0)
     f2 = MsgField(name="acc_y", type="float", size=4, start=4)
@@ -45,12 +46,13 @@ def test_single_lmsg_file1():
     assert r[0] == answer
 
 
-@clear_used_ids
+@reset
 def test_single_lmsg_file2():
     parser = YamlParser("tests/test_files/single_lmsg_file2")
 
     _, r = next(parser.parse_file())
     _used_ids.clear()
+    _used_names.clear()
 
     # ************ msg 1 ***************
     f1 = MsgField(name="acc_x", type="float", size=4, start=0)
@@ -70,12 +72,13 @@ def test_single_lmsg_file2():
     assert r[2] == answer
 
 
-@clear_used_ids
+@reset
 def test_multiple_lmsg_files():
     parser = YamlParser("tests/test_files/multiple_lmsg_files")
 
     for filename, r in parser.parse_file():
         _used_ids.clear()
+        _used_names.clear()
 
         if filename == "a":
             f1 = MsgField(name="acc_x", type="float", size=4, start=0)
@@ -94,25 +97,27 @@ def test_multiple_lmsg_files():
             assert r[0] == answer
 
 
-@clear_used_ids
+@reset
 def test_invalid_lmsg_file():
     parser = YamlParser("tests/test_files/invalid_lmsg_file")
 
     with pytest.raises(MissingFieldError):
         for filename, r in parser.parse_file():
             _used_ids.clear()
+            _used_names.clear()
 
             if filename == "valid":
                 answer = LMsg(id=3, name="ping", period=1000, fields=[])
                 assert r[0] == answer
 
 
-@clear_used_ids
+@reset
 def test_invalid_field_size():
     parser = YamlParser("tests/test_files/invalid_field_size")
 
     with pytest.raises(InvalidTypeSizeError):
         for filename, r in parser.parse_file():
             _used_ids.clear()
+            _used_names.clear()
 
     assert True

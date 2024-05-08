@@ -1,7 +1,7 @@
 from colorama import Fore, Style
 
 
-class OutOfBoundIdError(Exception):
+class OutOfBoundsIdError(Exception):
     def __init__(self, msg_name, id):
         super().__init__(
             Fore.RED
@@ -48,5 +48,5 @@ class InvalidTypeSizeError(Exception):
 
         super().__init__(
             Fore.RED
-            + f'Invalid size "{size}" for type "{type}" in field "{field_name}" in message "{msg_name}". Size must be {expected_sizes[type]}'
+            + f'Invalid size "{size}" for type "{type}" in message "{msg_name}", field "{field_name}". Size must be {expected_sizes[type]}'
         )
