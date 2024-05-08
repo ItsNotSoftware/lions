@@ -1,3 +1,16 @@
+"""
+Module Name: yaml_parser.py
+Author: Diogo Ferreira (ItsNotSoftware)
+Date: May 8, 2024
+
+Description:
+    This module contains the YAML parser class for parsing lmsg.yaml files into python objects.
+
+License:
+    Copyright (c) 2024 Diogo Ferreira. All rights reserved.
+    This code is licensed under the MIT License.
+"""
+
 import yaml
 
 from lions.lmsg import LMsg, MsgField
@@ -9,11 +22,22 @@ from colorama import Fore, Style
 
 
 class YamlParser:
-    """Parser class for parsing the lmsg.yaml files"""
+    """
+    Class to parse lmsg.yaml files into python objects
+
+    Attributes:
+        file_data (dict[str, dict]): Dictionary containing the filename and the data for each file
+
+    Methods:
+        validate_type_size(msg_name: str, field_name, type: str, size: int): Validate the size of the field based on the type
+        get_file_data(msg_files_dir: str) -> dict[str, dict]: Load the lmsg.yaml files from the directory msg_files_directory
+        yamlMsg_to_LMsg(msg_name: str, msg_data: dict) -> LMsg: Convert a YAML message to a LMsg object
+        parse_file() -> Generator[tuple[str, list[LMsg]], None, None]: Parse the lmsg.yaml files and yields information about one file at a time
+    """
 
     def __init__(self, msg_files_dir: str):
         """
-        Initialize the parser with the directory containing the lmsg.yaml files
+        Initialize the YamlParser object
 
         Args:
             msg_files_dir (str): Directory containing the lmsg.yaml files

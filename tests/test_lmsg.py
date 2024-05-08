@@ -84,27 +84,20 @@ def test_invalid_field_size_for_type():
 
 # Test invalid payload size
 @reset
-def test_invalid_payload_size():
-    with pytest.raises(ValueError):
+def test_payload_overflow():
+    with pytest.raises(PayloadOverflowError):
         fields = [
             {
                 "parent_msg_name": "msg1",
-                "name": "field1",
-                "type": "string",
-                "size": 230,
-                "start": 0,
-            },
-            {
-                "parent_msg_name": "msg1",
-                "name": "field2",
-                "type": "string",
-                "size": 240,
-                "start": 1,
-            },
-        ]
+                "name": f"field{i}",
+                "type": "uint8_t",
+                "size": 100,
+            }
+            for i in range(10)
+        ]  # Total payload size <= 248
         lmsg = LMsg(
             id=1,
-            name="Test",
+            name="msg1",
             period=100,
             fields=[MsgField(**field) for field in fields],
         )

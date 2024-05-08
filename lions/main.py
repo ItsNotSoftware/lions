@@ -1,3 +1,18 @@
+"""
+Module Name: main.py
+Author: Diogo Ferreira (ItsNotSoftware)
+Date: May 8, 2024
+
+Description:
+    This module is the main entry point for the LIONS compiler. It is responsible for
+    parsing the command line arguments, reading the message files, and generating the
+    corresponding C++ message files.
+
+License:
+    Copyright (c) 2024 Diogo Ferreira. All rights reserved.
+    This code is licensed under the MIT License.
+"""
+
 import sys
 from lions.cpp_gen.cpp_generator import CppGenerator
 from lions.yaml_parser import YamlParser
@@ -6,7 +21,8 @@ from colorama import Fore, Style
 
 
 def print_title():
-    # Display a title
+    """Function to print title of the program in ASCII art"""
+
     print(Fore.GREEN)
 
     print(
@@ -23,7 +39,8 @@ def print_title():
 
 
 def print_success_message():
-    # Display success message
+    """Function to print success message after all messages are compiled"""
+
     success_message = "All messages compiled successfully!"
     print(Fore.GREEN + "+" + "-" * (len(success_message) + 2) + "+" + Style.RESET_ALL)
     print(Fore.GREEN + f"| {success_message} |" + Style.RESET_ALL)
@@ -43,9 +60,11 @@ def main():
 
     print_title()
 
+    # Initialize the parser and generator objects
     parser = YamlParser(msg_files_dir)
     cpp_generator = CppGenerator(output_dir)
 
+    # Parse the message files and generate the corresponding C++ files
     for filename, msgs in parser.parse_file():
         cpp_generator.generate_msg_files(filename, msgs)
 
