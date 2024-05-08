@@ -1,4 +1,4 @@
-from pydantic import BaseModel, field_validator
+from pydantic import BaseModel, field_validator, model_validator
 from lions.errors import DuplicateIdError
 
 _used_ids = []  # List to store the used IDs
@@ -14,7 +14,7 @@ class MsgField(BaseModel):
 
     @field_validator("type")
     @classmethod
-    def validate_args(cls, v: str):
+    def validate_type(cls, v: str):
         """
         Validate the size of the field based on the type
 
@@ -75,38 +75,32 @@ class MsgField(BaseModel):
 class LMsg(BaseModel):
     """Class to represent a LMsg"""
 
-    id: int
     name: str
+    id: int
     period: int
     fields: list[MsgField]
 
-    @field_validator("id")
-    @classmethod
-    def validate_id(cls, value: int):
+    @model_validator(mode="after")
+    def validate_id(self):
         """
-        Validate the LMsg ID
-
-        Args:
-            cls (LMsg): LMsg class
-            value (int): ID value
+        Validate the ID of the LMsg
 
         Raises:
-            ValueError: If the ID is already in use or out of bouds
-
-        Returns:
-            int: ID value
+            DuplicateIdError: If the ID is already in use
+            ValueError: If the ID is out of bounds
         """
 
         # Check if the ID is already in use
-        if value in _used_ids:
-            raise DuplicateIdError(value)
+        if self.id in _used_ids:
+            raise DuplicateIdError(
+                self.name, self.id, [i for i in range(256) if i not in _used_ids][0]
+            )
 
         # Check if the ID is out of bounds
-        if value < 0 or value > 255:
+        if self.id < 0 or self.id > 255:
             raise ValueError("ID must be between 0 and 255")
 
-        _used_ids.append(value)
-        return value
+        _used_ids.append(self.id)
 
     @field_validator("fields")
     @classmethod
@@ -129,4 +123,5 @@ class LMsg(BaseModel):
 
     @property
     def payload_size(self):
+        """Get the payload size of the LMsg"""
         return sum(field.size for field in self.fields)

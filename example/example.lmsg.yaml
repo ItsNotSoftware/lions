@@ -8,24 +8,21 @@ accelerometer:
         acc_x:
             type: float
             size: 4
-            unit: "m/s^2"
             description: "Acceleration in x-axis m/s^2"
 
         acc_y:
             type: float
             size: 4
-            unit: "m/s^2"
             description: "Acceleration in y-axis m/s^2"
 
         acc_z:
             type: float
             size: 4
-            unit: "m/s^2"
             description: "Acceleration in z-axis m/s^2"
 
 # Example of a message with a string payload
 microphone:
-    id: 0x02
+    id: 0x01
     period: 0
     description: "Microphone data"
 
@@ -33,7 +30,6 @@ microphone:
         sound_level:
             type: int16_t
             size: 2
-            unit: "mdB"
             description: "Sound level in dB"
 
         message:

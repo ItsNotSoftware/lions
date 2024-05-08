@@ -1,13 +1,19 @@
+from colorama import Fore, Style
+
+
 class MissingFieldError(Exception):
     def __init__(self, field, message_name):
         super().__init__(
-            f'Missing required field "{field}" in message "{message_name}"'
+            Fore.RED + f'Missing required field "{field}" in message "{message_name}"'
         )
 
 
 class DuplicateIdError(Exception):
-    def __init__(self, id):
-        super().__init__(f'ID "{id}" is already in use')
+    def __init__(self, name, id, sugested_id):
+        super().__init__(
+            Fore.RED
+            + f'Duplicate ID "{id}" in message "{name}". Suggested free ID: "{sugested_id}"'
+        )
 
 
 class InvalidTypeSizeError(Exception):
@@ -28,5 +34,6 @@ class InvalidTypeSizeError(Exception):
         }
 
         super().__init__(
-            f'Invalid size "{size}" for type "{type}" in field "{field_name}" in message "{msg_name}". Size must be {expected_sizes[type]}'
+            Fore.RED
+            + f'Invalid size "{size}" for type "{type}" in field "{field_name}" in message "{msg_name}". Size must be {expected_sizes[type]}'
         )

@@ -46,6 +46,8 @@ class CppGenerator:
             filename (str): The filename of the message files
             msgs (list[LMsg]): The list of messages to generate
         """
+        print(f"Generating {filename}.cpp and {filename}.hpp")
+
         file = f"{self.output_dir}/{filename}"
 
         # Dictionary to pass to the jinja templates
