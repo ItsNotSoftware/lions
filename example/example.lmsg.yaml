@@ -22,7 +22,7 @@ accelerometer:
 
 # Example of a message with a string payload
 microphone:
-    id: 0x01
+    id: 0x02
     period: 0
     description: "Microphone data"
 
