@@ -1,5 +1,12 @@
 from jinja2 import Environment, FileSystemLoader
 from lions.lmsg import LMsg
+import time
+from colorama import Fore, Style
+
+
+def print_generation_status(output_dir, file_name):
+    timestamp = time.strftime("%Y-%m-%d %H:%M:%S")
+    print(f"{timestamp} - Successfully generated: {output_dir}/{file_name}")
 
 
 class CppGenerator:
@@ -28,15 +35,15 @@ class CppGenerator:
         """Generate the lions.hpp file"""
 
         with open(f"{self.output_dir}/lions.hpp", "w") as f:
-            print(f"Generating {self.output_dir}/lions.hpp")
             f.write(self.lions_hpp_template.render())
+            print_generation_status(self.output_dir, "lions.hpp")
 
     def generate_lions_cpp(self):
         """Generate the lions.cpp file"""
 
         with open(f"{self.output_dir}/lions.cpp", "w") as f:
-            print(f"Generating {self.output_dir}/lions.cpp")
             f.write(self.lions_cpp_template.render())
+            print_generation_status(self.output_dir, "lions.cpp")
 
     def generate_msg_files(self, filename: str, msgs: list[LMsg]):
         """
@@ -46,6 +53,7 @@ class CppGenerator:
             filename (str): The filename of the message files
             msgs (list[LMsg]): The list of messages to generate
         """
+
         file = f"{self.output_dir}/{filename}"
 
         # Dictionary to pass to the jinja templates
@@ -57,5 +65,10 @@ class CppGenerator:
                     field.type = "std::string"
 
         with open(f"{file}.hpp", "w") as f_hpp, open(f"{file}.cpp", "w") as f_cpp:
-            f_hpp.write(self.msg_hpp_template.render(jinja_dict))  # hpp
-            f_cpp.write(self.msg_cpp_template.render(jinja_dict))  # cpp
+            # hpp
+            f_hpp.write(self.msg_hpp_template.render(jinja_dict))
+            print_generation_status(self.output_dir, f"{filename}.hpp")
+
+            # cpp
+            f_cpp.write(self.msg_cpp_template.render(jinja_dict))
+            print_generation_status(self.output_dir, f"{filename}.cpp\n")

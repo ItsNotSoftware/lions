@@ -1,53 +1,18 @@
-from pydantic import BaseModel, field_validator
-from lions.errors import DuplicateIdError
+from pydantic import BaseModel, field_validator, model_validator
+from lions.errors import *
 
 _used_ids = []  # List to store the used IDs
+_used_names = []  # List to store the used names
 
 
 class MsgField(BaseModel):
     """Class to represent a field in a LMsg"""
 
+    parent_msg_name: str
     name: str
     type: str
     size: int
     start: int = 0
-
-    @field_validator("type")
-    @classmethod
-    def validate_args(cls, v: str):
-        """
-        Validate the size of the field based on the type
-
-        Args:
-            cls (MsgField): MsgField class
-            v (str): string containing the field v
-
-        Raises:
-            ValueError: If the type is invalid
-
-
-        Returns:
-            str: string containing the field v
-        """
-
-        # Check if the type is valid
-        if v not in [
-            "string",
-            "bool",
-            "uint8_t",
-            "uint16_t",
-            "uint32_t",
-            "uint64_t",
-            "int8_t",
-            "int16_t",
-            "int32_t",
-            "int64_t",
-            "float",
-            "double",
-        ]:
-            raise ValueError(f"Invalid type on field {v}")
-
-        return v
 
     @field_validator("size")
     @classmethod
@@ -71,42 +36,80 @@ class MsgField(BaseModel):
 
         return v
 
+    @model_validator(mode="after")
+    def validate_type(self):
+        if self.type not in [
+            "bool",
+            "int8_t",
+            "uint8_t",
+            "int16_t",
+            "uint16_t",
+            "int32_t",
+            "uint32_t",
+            "int64_t",
+            "uint64_t",
+            "float",
+            "double",
+            "string",
+        ]:
+            raise InvalidTypeError(self.parent_msg_name, self.name, self.type)
+
+        return self
+
 
 class LMsg(BaseModel):
     """Class to represent a LMsg"""
 
-    id: int
     name: str
+    id: int
     period: int
     fields: list[MsgField]
 
-    @field_validator("id")
-    @classmethod
-    def validate_id(cls, value: int):
+    @model_validator(mode="after")
+    def validate_id(self):
         """
-        Validate the LMsg ID
-
-        Args:
-            cls (LMsg): LMsg class
-            value (int): ID value
+        Validate the ID of the LMsg
 
         Raises:
-            ValueError: If the ID is already in use or out of bouds
-
-        Returns:
-            int: ID value
+            DuplicateIdError: If the ID is already in use
+            ValueError: If the ID is out of bounds
         """
 
         # Check if the ID is already in use
-        if value in _used_ids:
-            raise DuplicateIdError(value)
+        if self.id in _used_ids:
+            raise DuplicateIdError(
+                self.name, self.id, [i for i in range(256) if i not in _used_ids][0]
+            )
 
         # Check if the ID is out of bounds
-        if value < 0 or value > 255:
-            raise ValueError("ID must be between 0 and 255")
+        if self.id < 0 or self.id > 255:
+            raise OutOfBoundsIdError(self.name, self.id)
 
-        _used_ids.append(value)
-        return value
+        _used_ids.append(self.id)
+
+    @field_validator("name")
+    @classmethod
+    def validate_name(cls, v: str):
+        """
+        Validate the name of the LMsg
+
+        Args:
+            cls (LMsg): LMsg class
+            v (str): string containing the name
+
+        Raises:
+            DuplicateMsgNameError: If the name is already in use
+
+        Returns:
+            str: string containing the name
+        """
+
+        if v in _used_names:
+            raise DuplicateMsgNameError(v)
+
+        _used_names.append(v)
+
+        return v
 
     @field_validator("fields")
     @classmethod
@@ -129,4 +132,5 @@ class LMsg(BaseModel):
 
     @property
     def payload_size(self):
+        """Get the payload size of the LMsg"""
         return sum(field.size for field in self.fields)

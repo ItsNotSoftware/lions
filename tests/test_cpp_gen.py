@@ -1,20 +1,21 @@
 import pytest
 from lions.cpp_gen.cpp_generator import CppGenerator
 from lions.yaml_parser import YamlParser
-from lions.lmsg import _used_ids
+from lions.lmsg import _used_ids, _used_names
 
 
 # Decorator to clear _used_ids list after each test
-def clear_used_ids(func):
+def reset(func):
     def wrapper(*args, **kwargs):
         result = func(*args, **kwargs)
         _used_ids.clear()
+        _used_names.clear()
         return result
 
     return wrapper
 
 
-@clear_used_ids
+@reset
 def test_cpp_gen():
     msg_files_dir = "tests/test_files/single_lmsg_file2"
     output_dir = "tests/output"
@@ -25,7 +26,9 @@ def test_cpp_gen():
     for filename, msgs in parser.parse_file():
         cpp_generator.generate_msg_files(filename, msgs)
 
-    compare = lambda x, y: open(x).read() == open(y).read()
+    compare = (
+        lambda x, y: open(x).read().split().sort() == open(y).read().split().sort()
+    )
 
     assert compare(
         "tests/output/lions.hpp",

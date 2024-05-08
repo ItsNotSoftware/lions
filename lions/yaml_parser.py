@@ -5,6 +5,8 @@ from typing import Generator
 from lions.errors import MissingFieldError, InvalidTypeSizeError
 import os
 
+from colorama import Fore, Style
+
 
 class YamlParser:
     """Parser class for parsing the lmsg.yaml files"""
@@ -69,7 +71,9 @@ class YamlParser:
                 file_data[filename] = yaml.safe_load(open(f"{msg_files_dir}/{file}"))
 
         if len(file_data) == 0:
-            raise FileNotFoundError(f"No lmsg.yaml files found in {msg_files_dir}")
+            raise FileNotFoundError(
+                Fore.RED + f"No lmsg.yaml files found in {msg_files_dir}"
+            )
 
         return file_data
 
@@ -118,11 +122,15 @@ class YamlParser:
 
                 except KeyError as e:
                     key = e.args[0]
-                    raise MissingFieldError(key, field_name_)
+                    raise MissingFieldError(key, msg_name + "/" + field_name_)
 
                 fields.append(
                     MsgField(
-                        name=field_name, type=field_type, size=field_size, start=start
+                        parent_msg_name=name,
+                        name=field_name,
+                        type=field_type,
+                        size=field_size,
+                        start=start,
                     )
                 )
                 start += field_size  # Update the start index for the next field
