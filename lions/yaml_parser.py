@@ -100,8 +100,12 @@ class YamlParser:
 
                 file_data[filename] = yaml.safe_load(open(f"{msg_files_dir}/{file}"))
 
-        if len(file_data) == 0:
-            raise NoDataFoundError(msg_files_dir)
+        print(file_data)
+
+        # Check if any of the data files are empty
+        for key in file_data:
+            if file_data[key] is None:
+                raise NoDataFoundError(msg_files_dir + "/" + key)
 
         return file_data
 
