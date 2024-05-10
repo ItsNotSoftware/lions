@@ -82,6 +82,9 @@ class YamlParser:
         Args:
             msg_files_dir (str): Directory containing the lmsg.yaml files
 
+        Raises:
+            MsgFilesNotFoundError: If no lmsg.yaml files are found in the directory
+
         Returns:
             dict[str, dict]: Dictionary containing the filename and the data for each file
         """
@@ -100,10 +103,21 @@ class YamlParser:
 
                 file_data[filename] = yaml.safe_load(open(f"{msg_files_dir}/{file}"))
 
+        # Check if any lmsg.yaml files are found
+        if not file_data:
+            raise MsgFilesNotFoundError(msg_files_dir)
+
         # Check if any of the data files are empty
         for key in file_data:
             if file_data[key] is None:
-                raise NoDataFoundError(msg_files_dir + "/" + key)
+                print(
+                    Fore.YELLOW
+                    + "Warning: Empty file found: "
+                    + msg_files_dir
+                    + "/"
+                    + key
+                    + ".lmsg.yaml\n"
+                )
 
         return file_data
 

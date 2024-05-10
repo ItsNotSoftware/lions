@@ -17,7 +17,7 @@ def reset(func):
 
 @reset
 def test_invalid_dir():
-    with pytest.raises(FileNotFoundError):
+    with pytest.raises(MsgFilesNotFoundError):
         YamlParser("tests/test_files")
 
 
