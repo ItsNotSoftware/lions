@@ -46,7 +46,7 @@ class AccelerometerMsg {
     float acc_z;
     
     /** Create a new accelerometer msg */
-   AccelerometerMsg(const float acc_x, const float acc_y, const float acc_z);
+    AccelerometerMsg(const float acc_x, const float acc_y, const float acc_z);
     
     /** Decode LMsg to accelerometer msg */
     AccelerometerMsg(const LMsg &msg); 
@@ -63,7 +63,7 @@ class MicrophoneMsg {
     std::string message;
     
     /** Create a new microphone msg */
-   MicrophoneMsg(const int16_t sound_level, const std::string message);
+    MicrophoneMsg(const int16_t sound_level, const std::string message);
     
     /** Decode LMsg to microphone msg */
     MicrophoneMsg(const LMsg &msg); 
@@ -78,7 +78,7 @@ class PingMsg {
     
     
     /** Create a new ping msg */
-   PingMsg();
+    PingMsg();
     
     /** Decode LMsg to ping msg */
     PingMsg(const LMsg &msg); 

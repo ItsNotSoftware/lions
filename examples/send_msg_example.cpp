@@ -2,23 +2,23 @@
 
 #include <iostream>
 
-#include "generated_code/lions.hpp"
-#include "generated_code/my_messages.hpp"
+#include "generated_code/my_messages.hpp"  // Include the generated messages.
 
 // Define a constant for the device identifier used in the message.
 constexpr uint8_t this_device_id = 1;
-constexpr uint8_t brodcast_id = 255;
+constexpr uint8_t broadcast_id = 255;
 
-// System-specific implementation of sending a byte.
+// Example of a possible function to send a single byte.
 void send(uint8_t byte) {
-    // Implementation of sending a byte.
+    // Placeholder for hardware-specific byte sending implementation.
 }
 
-// System-specific implementation of sending an array of bytes.
+// Example of a possible function to send an array of bytes.
 void send_array(uint8_t *data, uint8_t size) {
-    // Implementation of sending an array of bytes.
+    // Placeholder for hardware-specific array sending implementation.
 }
 
+// Example of a possible function to send a full message.
 void send_msg(lions::LMsg &encoded_msg) {
     // Send each component of the message header.
     send(encoded_msg.header.src);       // Source device ID
@@ -31,24 +31,18 @@ void send_msg(lions::LMsg &encoded_msg) {
 }
 
 void send_msg_example(uint8_t dst_id, uint8_t next_hop) {
-    int16_t sound_level = -23;
+    // Microphone message example: sound level of -23, and a greeting message.
+    lions::MicrophoneMsg mic_msg(-23, "Hello World!");
+    auto encoded_mic_msg = mic_msg.encode(this_device_id, dst_id, next_hop);
+    send_msg(encoded_mic_msg);
 
-    // Create a microphone message with: soundlevel = -23,  string = "Hello World!"
-    lions::MicrophoneMsg msg(sound_level, "Hello World!");
+    // Accelerometer message example: acceleration readings along three axes.
+    lions::AccelerometerMsg accel_msg(1.0, 2.0, 3.0);
+    auto encoded_accel_msg = accel_msg.encode(this_device_id, dst_id, next_hop);
+    send_msg(encoded_accel_msg);
 
-    // Encode the message for sending.
-    auto encoded_msg = msg.encode(this_device_id, 2, 3);
-
-    // Use system-specific implementation to send the message.
-    send_msg(encoded_msg);
-
-    // Another example with an accelerometer message.
-    lions::AccelerometerMsg msg2(this_device_id, dst_id, next_hop, 1.0, 2.0, 3.0);
-    auto encoded_msg2 = msg2.encode(this_device_id, 2, 3);
-    send_msg(encoded_msg2);
-
-    // Another example with a ping message.
-    lions::PingMsg msg3(brodcast_id, dst_id, next_hop);
-    auto encoded_msg3 = msg3.encode(this_device_id, 2, 3);
-    send_msg(encoded_msg3);
+    // Ping message example: a simple broadcast message to inform device availability.
+    lions::PingMsg ping_msg;
+    auto encoded_ping_msg = ping_msg.encode(this_device_id, broadcast_id, broadcast_id);
+    send_msg(encoded_ping_msg);
 }
