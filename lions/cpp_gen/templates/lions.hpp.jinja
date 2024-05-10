@@ -35,7 +35,7 @@ class LMsg {
     uint8_t payload[248];
     uint8_t payload_size;
 
-    LMsg(uint8_t payload_size);
+    LMsg(uint8_t payload_size = 0);
     uint16_t calculate_checksum();
     bool valid_checksum();
 

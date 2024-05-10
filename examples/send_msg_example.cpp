@@ -1,7 +1,3 @@
-#include <stdio.h>
-
-#include <iostream>
-
 #include "generated_code/my_messages.hpp"  // Include the generated messages.
 
 // Define a constant for the device identifier used in the message.
@@ -30,7 +26,12 @@ void send_msg(lions::LMsg &encoded_msg) {
 }
 //====================================================================================
 
-/** Example how to encode messages from the generated messages classes. */
+/** Example how to encode messages using lions for sending.
+ *
+ * 1. Construct the message object.
+ * 2. Encode the message object into a LMsg object. (Header + Payload binary representation)
+ * 3. Send the LMsg object using your hardware/protocol.
+ */
 void encode_and_send(uint8_t dst_id, uint8_t next_hop) {
     // Microphone message example: sound level of -23, and a greeting message.
     lions::MicrophoneMsg mic_msg(-23, "Hello World!");
