@@ -15,7 +15,7 @@ import yaml
 
 from lions.lmsg import LMsg, MsgField
 from typing import Generator
-from lions.errors import MissingFieldError, InvalidTypeSizeError
+from lions.errors import *
 import os
 
 from colorama import Fore, Style
@@ -82,22 +82,42 @@ class YamlParser:
         Args:
             msg_files_dir (str): Directory containing the lmsg.yaml files
 
+        Raises:
+            MsgFilesNotFoundError: If no lmsg.yaml files are found in the directory
+
         Returns:
             dict[str, dict]: Dictionary containing the filename and the data for each file
         """
         file_data = {}
 
-        for file in os.listdir(msg_files_dir):
+        # Get the list of files in the directory
+        try:
+            subdirs = os.listdir(msg_files_dir)
+        except FileNotFoundError:
+            raise MsgFilesNotFoundError(msg_files_dir)
+
+        for file in subdirs:
             if file.endswith(".lmsg.yaml"):
                 # get filename without extension
                 filename = file.split("/")[-1].split(".")[0]
 
                 file_data[filename] = yaml.safe_load(open(f"{msg_files_dir}/{file}"))
 
-        if len(file_data) == 0:
-            raise FileNotFoundError(
-                Fore.RED + f"No lmsg.yaml files found in {msg_files_dir}"
-            )
+        # Check if any lmsg.yaml files are found
+        if not file_data:
+            raise MsgFilesNotFoundError(msg_files_dir)
+
+        # Check if any of the data files are empty
+        for key in file_data:
+            if file_data[key] is None:
+                print(
+                    Fore.YELLOW
+                    + "Warning: Empty file found: "
+                    + msg_files_dir
+                    + "/"
+                    + key
+                    + ".lmsg.yaml\n"
+                )
 
         return file_data
 

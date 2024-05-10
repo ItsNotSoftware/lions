@@ -85,3 +85,11 @@ class PayloadOverflowError(Exception):
     def __init__(self, msg_name, size):
         message = f'Error in message "{msg_name}": Payload size "{size}" exceeds maximum size of 244 bytes. Please reduce the size of the message fields'
         super().__init__(Fore.RED + message)
+
+
+class MsgFilesNotFoundError(Exception):
+    """Exception raised when the message file is not found."""
+
+    def __init__(self, dir):
+        message = f'Error: No ".lmsg.yaml" files found in the directory "{dir}".'
+        super().__init__(Fore.RED + message)

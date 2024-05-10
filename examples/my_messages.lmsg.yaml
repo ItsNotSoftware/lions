@@ -1,6 +1,5 @@
-# Sensor message definition
 accelerometer:
-    id: 1
+    id: 0x01
     period: 1000
     description: "Accelerometer data"
 
@@ -18,13 +17,26 @@ accelerometer:
         acc_z:
             type: float
             size: 4
+            unit: "m/s^2"
             description: "Acceleration in z-axis m/s^2"
-battery:
-    id: 2
+
+microphone:
+    id: 0x02
     period: 0
+    description: "Microphone data"
 
     fields:
-        soc:
-            type: uint8_t
-            size: 1
-            description: "Battery %"
+        sound_level:
+            type: int16_t
+            size: 2
+            description: "Sound level in dB"
+
+        message:
+            type: string
+            size: 100
+            description: "Speach-to-text message"
+
+ping:
+    id: 0x03
+    period: 1000
+    description: "Ping message"
