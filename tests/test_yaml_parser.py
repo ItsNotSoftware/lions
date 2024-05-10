@@ -155,7 +155,7 @@ def test_multiple_lmsg_files():
 def test_invalid_lmsg_file():
     parser = YamlParser("tests/test_files/invalid_lmsg_file")
 
-    with pytest.raises(MsgFilesNotFoundError):
+    with pytest.raises(MissingFieldError):
         for filename, r in parser.parse_file():
             _used_ids.clear()
             _used_names.clear()
