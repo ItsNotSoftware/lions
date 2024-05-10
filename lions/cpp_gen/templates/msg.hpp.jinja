@@ -40,7 +40,7 @@ class {{msg.name | capitalize }}Msg {
     {{field.type}} {{field.name}};{% endfor %}
     
     /** Create a new {{msg.name}} msg */
-   {{ msg.name | capitalize }}Msg(const uint8_t src, const uint8_t dst, const uint8_t next_hop{% for field in msg.fields %}, const {{ field.type }} {{ field.name }}{% endfor %});
+   {{ msg.name | capitalize }}Msg({% for field in msg.fields %}, const {{ field.type }} {{ field.name }}{% endfor %});
     
     /** Decode LMsg to {{msg.name}} msg */
     {{msg.name | capitalize}}Msg(const LMsg &msg); 
