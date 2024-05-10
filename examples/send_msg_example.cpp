@@ -8,29 +8,30 @@
 constexpr uint8_t this_device_id = 1;
 constexpr uint8_t broadcast_id = 255;
 
-// Example of a possible function to send a single byte.
-void send(uint8_t byte) {
-    // Placeholder for hardware-specific byte sending implementation.
-}
+// ====================================================================================
+// User created functions to send messages depending on the hardware/protocol.
+//
+// NOTE: this is just an example, you can use any other method to send the messages.
 
-// Example of a possible function to send an array of bytes.
-void send_array(uint8_t *data, uint8_t size) {
-    // Placeholder for hardware-specific array sending implementation.
-}
+void send_byte(uint8_t byte) {}
+
+void send_array(uint8_t *data, uint8_t size) {}
 
 // Example of a possible function to send a full message.
 void send_msg(lions::LMsg &encoded_msg) {
     // Send each component of the message header.
-    send(encoded_msg.header.src);       // Source device ID
-    send(encoded_msg.header.dst);       // Destination device ID
-    send(encoded_msg.header.msg_id);    // Message ID
-    send(encoded_msg.header.next_hop);  // Next hop ID
+    send_byte(encoded_msg.header.src);       // Source device ID
+    send_byte(encoded_msg.header.dst);       // Destination device ID
+    send_byte(encoded_msg.header.msg_id);    // Message ID
+    send_byte(encoded_msg.header.next_hop);  // Next hop ID
 
     // Send the payload.
     send_array(encoded_msg.payload, encoded_msg.payload_size);
 }
+//====================================================================================
 
-void send_msg_example(uint8_t dst_id, uint8_t next_hop) {
+/** Example how to encode messages from the generated messages classes. */
+void encode_and_send(uint8_t dst_id, uint8_t next_hop) {
     // Microphone message example: sound level of -23, and a greeting message.
     lions::MicrophoneMsg mic_msg(-23, "Hello World!");
     auto encoded_mic_msg = mic_msg.encode(this_device_id, dst_id, next_hop);
