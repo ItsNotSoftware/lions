@@ -30,7 +30,7 @@ namespace lions {
    
    namespace msg_period {
 {% for msg in msgs %}   constexpr uint8_t {{msg.name|upper}} = {{msg.period}};
-{% endfor %}   }  // namespace msg_id
+{% endfor %}   }  // namespace msg_period
 
 {% for msg in msgs %}
 class {{msg.name | capitalize }}Msg {
