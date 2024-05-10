@@ -1,8 +1,10 @@
 # LIONS (Lightweight IoT Network Specification)
 
+## Index
+
 <!-- TOC start (generated with https://github.com/derlin/bitdowntoc) -->
 
--   [LIONS](#lions)
+-   [Description](#lions)
 -   [Install](#install)
 -   [Usage](#usage)
 -   [Raw Message format](#raw-message-format)
@@ -18,7 +20,7 @@
 
 <!-- TOC --><a name="lions"></a>
 
-## LIONS
+## Description
 
 LIONS is a communication protocol coupled with a compiler, specifically designed for low-bandwidth IoT mesh and ad hoc networks. Originally tailored for LoRa, LIONS is versatile enough to be adapted to various communication standards, thanks to its protocol-agnostic message encoding approach.
 
