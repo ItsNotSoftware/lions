@@ -1,5 +1,9 @@
 # LIONS (Lightweight IoT Network Specification)
 
+[TOC]
+
+## LIONS
+
 LIONS is a communication protocol coupled with a compiler, specifically designed for low-bandwidth IoT mesh and ad hoc networks. Originally tailored for LoRa, LIONS is versatile enough to be adapted to various communication standards, thanks to its protocol-agnostic message encoding approach.
 
 The core of LIONS lies in its efficient message encoding system. Messages are compactly encoded into byte arrays, ensuring that each value occupies only the necessary space required by its type, thus minimizing space.
@@ -13,8 +17,6 @@ This protocol is ideal for developers looking to implement efficient, data-const
     $ pip install lions
 
 ## Usage
-
-**Generate C++ code:**
 
     $ lions [msg_files_dir] [output_dir]
 
@@ -34,7 +36,7 @@ The message structure is composed of a 6-byte header, followed by a variable-len
 | 4-5        | checksum | 2            | Checksum for error checking                       |
 | 6-249      | payload  | 244          | Actual data payload                               |
 
-### C++ raw message representation
+### C++ representation
 
 ```C++
 struct Header {
@@ -59,11 +61,7 @@ class LMsg {
 };
 ```
 
-## Message generation
-
-To specify messages in your system and auto generate code for encoding and decoding, msg files are used.
-
-### Defining Messages
+## Defining Messages
 
 LIONS uses `.lmsg.yaml` files to define message specifications for IoT networks. Each file can contain multiple message definitions that are used by the LIONS compiler to generate C++ code for message handling.
 
@@ -122,7 +120,7 @@ ping:
 
 The LIONS compiler auto-generates code to facilitate handling, encoding and decoding of messages defined in `.lmsg.yaml` files. Below is an example of how part of the generated code might look for the yaml file above.
 
-#### Constants
+##### Constants
 
 The code defines namespaces to hold constants for message IDs and periods, ensuring easy reference throughout the codebase:
 
@@ -171,6 +169,10 @@ class AccelerometerMsg {
 };
 
 ```
+
+## Examples
+
+[Examples](https://github.com/ItsNotSoftware/lions/tree/main/examples)
 
 ## Target language support
 
