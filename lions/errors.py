@@ -99,5 +99,5 @@ class NoDataFoundError(Exception):
     """Exception raised when no data is found in the message file."""
 
     def __init__(self, dir):
-        message = f'Error: No data found inside "{dir}".'
+        message = f'Error: No data found inside "{dir}.lmsg.yaml".'
         super().__init__(Fore.RED + message)

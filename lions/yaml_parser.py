@@ -100,8 +100,6 @@ class YamlParser:
 
                 file_data[filename] = yaml.safe_load(open(f"{msg_files_dir}/{file}"))
 
-        print(file_data)
-
         # Check if any of the data files are empty
         for key in file_data:
             if file_data[key] is None:
