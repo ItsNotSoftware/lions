@@ -22,8 +22,8 @@
 
 namespace lions {
 {% for msg in msgs %} 
-{{ msg.name | capitalize }}Msg::{{ msg.name | capitalize }}Msg({% for field in msg.fields %}, const {{ field.type }} {{ field.name }}{% endfor %})
-    : {% for field in msg.fields %}{{ field.name }}({{ field.name }}){% if not loop.last %}, {% endif %}{% endfor %}{}
+{{ msg.name | capitalize }}Msg::{{ msg.name | capitalize }}Msg({% for field in msg.fields %}const {{ field.type }} {{ field.name }}{% if not loop.last %}, {% endif %}{% endfor %})
+    {% if msg.fields|length != 0 %}: {% for field in msg.fields %}{{ field.name }}({{ field.name }}){% if not loop.last %}, {% endif %}{% endfor %}{% endif %} {}
 
 {{ msg.name  | capitalize }}Msg::{{ msg.name  | capitalize }}Msg(const LMsg &msg) { {# Constructors #}
     header = std::move(msg.header);
