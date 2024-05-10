@@ -2,22 +2,22 @@
 
 <!-- TOC start (generated with https://github.com/derlin/bitdowntoc) -->
 
-- [LIONS](#lions)
-- [Install](#install)
-- [Usage](#usage)
-- [Raw Message format](#raw-message-format)
-   * [C++ representation](#c-representation)
-- [Defining Messages](#defining-messages)
-   * [Structure of Message Files](#structure-of-message-files)
-   * [Generated Code Overview](#generated-code-overview)
-         - [Constants](#constants)
-   * [Message Class Structure](#message-class-structure)
-- [Examples](#examples)
-- [Target language support](#target-language-support)
+-   [LIONS](#lions)
+-   [Install](#install)
+-   [Usage](#usage)
+-   [Raw Message format](#raw-message-format)
+    -   [C++ representation](#c-representation)
+-   [Defining Messages](#defining-messages)
+    -   [Structure of Message Files](#structure-of-message-files)
+    -   [Generated Code Overview](#generated-code-overview) - [Constants](#constants)
+    -   [Message Class Structure](#message-class-structure)
+-   [Examples](#examples)
+-   [Target language support](#target-language-support)
 
 <!-- TOC end -->
 
 <!-- TOC --><a name="lions"></a>
+
 ## LIONS
 
 LIONS is a communication protocol coupled with a compiler, specifically designed for low-bandwidth IoT mesh and ad hoc networks. Originally tailored for LoRa, LIONS is versatile enough to be adapted to various communication standards, thanks to its protocol-agnostic message encoding approach.
@@ -136,7 +136,7 @@ ping:
 
 The LIONS compiler auto-generates code to facilitate handling, encoding and decoding of messages defined in `.lmsg.yaml` files. Below is an example of how part of the generated code might look for the yaml file above.
 
-##### Constants
+#### Constants
 
 The code defines namespaces to hold constants for message IDs and periods, ensuring easy reference throughout the codebase:
 
@@ -154,7 +154,7 @@ namespace msg_period {
 }  // namespace msg_period
 ```
 
-### Message Class Structure
+#### Message Class Structure
 
 For each message type defined in the YAML files, the LIONS compiler generates a corresponding C++ class. This class includes the specific fields of the message, two constructors, and an encode method.
 
