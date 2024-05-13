@@ -25,7 +25,7 @@
 namespace lions {
 
    namespace msg_id {
-{% for msg in msgs %}   constexpr uint8_t {{msg.name|upper}} = {{msg.id}};
+{% for msg in msgs %}   constexpr uint32_t {{msg.name|upper}} = {{msg.id}};
 {% endfor %}   }  // namespace msg_id
    
    namespace msg_period {
