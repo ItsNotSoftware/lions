@@ -2,6 +2,7 @@ from jinja2 import Environment, FileSystemLoader
 from lions.lmsg import LMsg
 import time
 from colorama import Fore, Style
+import os
 
 
 def print_generation_status(output_dir, file_name):
@@ -20,7 +21,8 @@ class CppGenerator:
 
         self.output_dir = output_dir
 
-        self.env = Environment(loader=FileSystemLoader("lions/cpp_gen/templates"))
+        template_dir = os.path.dirname(__file__) + "/templates"
+        self.env = Environment(loader=FileSystemLoader(template_dir))
 
         # Load the templates
         self.lions_hpp_template = self.env.get_template("lions.hpp.jinja")
@@ -64,11 +66,13 @@ class CppGenerator:
                 if field.type == "string":
                     field.type = "std::string"
 
-        with open(f"{file}.hpp", "w") as f_hpp, open(f"{file}.cpp", "w") as f_cpp:
+        with open(f"{file}_lmsgs.hpp", "w") as f_hpp, open(
+            f"{file}_lmsgs.cpp", "w"
+        ) as f_cpp:
             # hpp
             f_hpp.write(self.msg_hpp_template.render(jinja_dict))
-            print_generation_status(self.output_dir, f"{filename}.hpp")
+            print_generation_status(self.output_dir, f"{filename}_lmsgs.hpp")
 
             # cpp
             f_cpp.write(self.msg_cpp_template.render(jinja_dict))
-            print_generation_status(self.output_dir, f"{filename}.cpp\n")
+            print_generation_status(self.output_dir, f"{filename}_lmsgs.cpp\n")
