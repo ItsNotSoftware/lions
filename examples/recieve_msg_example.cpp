@@ -1,4 +1,4 @@
-#include "generated_code/my_messages.hpp"  // Include the generated messages.
+#include "generated_code/my_messages_lmsgs.hpp"  // Include the generated messages.
 
 // Define a constant for the device identifier used in the message.
 constexpr uint8_t this_device_id = 1;
@@ -20,7 +20,8 @@ lions::LMsg recive_msg() {
     msg.header.dst = recieve_byte();
     msg.header.msg_id = recieve_byte();
     msg.header.next_hop = recieve_byte();
-    msg.payload_size = recieve_byte();
+    msg.header.checksum_low = recieve_byte();
+    msg.header.checksum_high = recieve_byte();
 
     for (uint8_t i = 0; i < msg.payload_size; i++) {
         msg.payload[i] = recieve_byte();
