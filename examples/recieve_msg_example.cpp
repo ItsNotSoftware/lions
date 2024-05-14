@@ -42,6 +42,11 @@ lions::LMsg recive_msg() {
 void receive_and_decode_example(uint8_t dst_id, uint8_t next_hop) {
     auto received_msg = recive_msg();
 
+    // Check if the message has a valid checksum.
+    if (!received_msg.valid_checksum()) {
+        // Invalid message, do something.
+    }
+
     bool to_forward = received_msg.header.next_hop == this_device_id;
     bool is_destination = received_msg.header.dst =
         broadcast_id || received_msg.header.dst == this_device_id;
@@ -55,11 +60,6 @@ void receive_and_decode_example(uint8_t dst_id, uint8_t next_hop) {
     }
 
     if (!is_destination) return;  // Ignore message if not for this device.
-
-    // Check if the message has a valid checksum.
-    if (!received_msg.valid_checksum()) {
-        // Invalid message, do something.
-    }
 
     switch (received_msg.header.msg_id) {
         case lions::msg_id::ACCELEROMETER: {
