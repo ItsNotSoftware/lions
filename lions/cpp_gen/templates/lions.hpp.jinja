@@ -22,25 +22,34 @@
 #include <cstdint>
 
 namespace lions {
+
+constexpr uint8_t MAX_PAYLOAD_SIZE = 248;
+
 struct Header {
     uint8_t src;
     uint8_t dst;
     uint8_t next_hop;
     uint8_t msg_id;
+
+    union{
+        uint16_t checksum;
+
+        struct{
+            uint8_t checksum_low;
+            uint8_t checksum_high;
+        };
+    };
 };
 
 class LMsg {
    public:
     Header header;
-    uint8_t payload[248];
+    uint8_t payload[MAX_PAYLOAD_SIZE];
     uint8_t payload_size;
 
     LMsg(uint8_t payload_size = 0);
     uint16_t calculate_checksum();
     bool valid_checksum();
-
-   private:
-    uint16_t checksum;
 };
 
 }  // namespace lions

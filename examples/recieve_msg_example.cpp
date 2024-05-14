@@ -1,4 +1,4 @@
-#include "generated_code/my_messages.hpp"  // Include the generated messages.
+#include "generated_code/my_messages_lmsgs.hpp"  // Include the generated messages.
 
 // Define a constant for the device identifier used in the message.
 constexpr uint8_t this_device_id = 1;
@@ -20,10 +20,11 @@ lions::LMsg recive_msg() {
     msg.header.dst = recieve_byte();
     msg.header.msg_id = recieve_byte();
     msg.header.next_hop = recieve_byte();
-    msg.payload_size = recieve_byte();
+    msg.header.checksum_low = recieve_byte();
+    msg.header.checksum_high = recieve_byte();
 
-    for (uint8_t i = 0; i < msg.payload_size; i++) {
-        msg.payload[i] = recieve_byte();
+    while (data_available()) {
+        msg.payload[msg.payload_size++] = recieve_byte();
     }
     return msg;
 }
@@ -41,6 +42,11 @@ lions::LMsg recive_msg() {
 void receive_and_decode_example(uint8_t dst_id, uint8_t next_hop) {
     auto received_msg = recive_msg();
 
+    // Check if the message has a valid checksum.
+    if (!received_msg.valid_checksum()) {
+        // Invalid message, do something.
+    }
+
     bool to_forward = received_msg.header.next_hop == this_device_id;
     bool is_destination = received_msg.header.dst =
         broadcast_id || received_msg.header.dst == this_device_id;
@@ -54,11 +60,6 @@ void receive_and_decode_example(uint8_t dst_id, uint8_t next_hop) {
     }
 
     if (!is_destination) return;  // Ignore message if not for this device.
-
-    // Check if the message has a valid checksum.
-    if (!received_msg.valid_checksum()) {
-        // Invalid message, do something.
-    }
 
     switch (received_msg.header.msg_id) {
         case lions::msg_id::ACCELEROMETER: {

@@ -20,6 +20,8 @@ void send_msg(lions::LMsg &encoded_msg) {
     send_byte(encoded_msg.header.dst);       // Destination device ID
     send_byte(encoded_msg.header.msg_id);    // Message ID
     send_byte(encoded_msg.header.next_hop);  // Next hop ID
+    send_byte(encoded_msg.header.checksum_low);
+    send_byte(encoded_msg.header.checksum_high);
 
     // Send the payload.
     send_array(encoded_msg.payload, encoded_msg.payload_size);
