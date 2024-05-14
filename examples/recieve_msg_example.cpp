@@ -23,8 +23,8 @@ lions::LMsg recive_msg() {
     msg.header.checksum_low = recieve_byte();
     msg.header.checksum_high = recieve_byte();
 
-    for (uint8_t i = 0; i < msg.payload_size; i++) {
-        msg.payload[i] = recieve_byte();
+    while (data_available()) {
+        msg.payload[msg.payload_size++] = recieve_byte();
     }
     return msg;
 }
