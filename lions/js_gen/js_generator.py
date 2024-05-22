@@ -28,7 +28,7 @@ class JsGenerator:
         self.module_js_template = self.env.get_template("lions.js.jinja")
         self.class_js_template = self.env.get_template("msg.js.jinja")
 
-        self.generate_module_js()
+        self.generate_lions_js()
 
     @staticmethod
     def convert_to_js_types(lmsgs: list[LMsg]) -> list[LMsg]:
@@ -78,8 +78,10 @@ class JsGenerator:
             filename (str): The filename of the message files
             msgs (list[LMsg]): The list of messages to generate
         """
+        # Dictionary to pass to the jinja templates
+        jinja_dict = {"filename": filename, "msgs": msgs}
 
         file = f"{self.output_dir}/{filename}"
         with open(f"{file}.js", "w") as f:
-            f.write(self.class_js_template.render(msgs=msgs))
+            f.write(self.class_js_template.render(jinja_dict))
             print_generation_status(self.output_dir, f"{filename}.js")

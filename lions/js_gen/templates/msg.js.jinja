@@ -18,33 +18,22 @@
 import { LMsg } from './lions.js';
 
 const msg_id = {
-    {% for msg in messages %}
-    {{msg.name}}: {{msg.id}}{% if not loop.last %},{% endif %}
-    {% endfor %}
-};
+{% for msg in msgs %}    {{msg.name}}: {{msg.id}}{% if not loop.last %},{% endif %}
+{% endfor %}};
 
 const msg_period = {
-    {% for msg in messages %}
-    {{msg.name}}: {{msg.period}}{% if not loop.last %},{% endif %}
-    {% endfor %}
-};
+{% for msg in msgs %}    {{msg.name}}: {{msg.period}}{% if not loop.last %},{% endif %}
+{% endfor %}};
 
-{% for msg in messages %}
+{% for msg in msgs %}
 class {{msg.name | capitalize}}Msg {
-    constructor({% for field in msg.fields %}{{field.name}} = {{field.default}}{% if not loop.last %}, {% endif %}{% endfor %}) {
-        {% for field in msg.fields %}
-        this.{{field.name}} = {{field.name}};
-        {% endfor %}
-    }
+    constructor({% for field in msg.fields %}{{field.name}}{% if not loop.last %}, {% endif %}{% endfor %}) {
+{% for field in msg.fields %}        this.{{field.name}} = {{field.name}};
+{% endfor %}    }
 
-    static fromLMsg(msg) {
-        {% for field in msg.fields %}
-        {% if field.type == 'string' %} 
-        const {{field.name}} = new TextDecoder().decode(msg.payload.slice({{loop.index0}}, {{loop.index0}} + {{field.size}}));
-        {% else %}
-        const {{field.name}} = new {{field.type}}Array(msg.payload.buffer.slice({{loop.index0}}, {{loop.index0}} + {{field.size}}))[0];
-        {% endif %}
-        {% endfor %}
+    static fromLMsg(msg) { {% for field in msg.fields %} 
+        {% if field.type == 'string' %}const {{field.name}} = new TextDecoder().decode(msg.payload.slice({{loop.index0}}, {{loop.index0}} + {{field.size}}));
+        {% else %}const {{field.name}} = new {{field.type}}Array(msg.payload.buffer.slice({{loop.index0}}, {{loop.index0}} + {{field.size}}))[0]; {% endif %}{% endfor %}
 
         return new {{msg.name | capitalize}}Msg({% for field in msg.fields %}{{field.name}}{% if not loop.last %}, {% endif %}{% endfor %});
     }
@@ -56,18 +45,14 @@ class {{msg.name | capitalize}}Msg {
         msg.header.dst = dst;
         msg.header.next_hop = next_hop;
         msg.header.msg_id = msg_id.{{msg.name}};
-
         {% for field in msg.fields %}
-        {% if field.type == 'string' %}
-        new TextEncoder().encode(this.{{field.name}}).forEach((byte, i) => msg.payload[{{loop.index0}} + i] = byte);
+        {% if field.type == 'string' %}new TextEncoder().encode(this.{{field.name}}).forEach((byte, i) => msg.payload[{{loop.index0}} + i] = byte);
         msg.payload[{{loop.index0}} + {{field.size}}] = 0;
-        {% else %}
-        new {{field.type}}Array(msg.payload.buffer).set([this.{{field.name}}], {{loop.index0}});
-        {% endif %}
-        {% endfor %}
+        {% else %}new {{field.type}}Array(msg.payload.buffer).set([this.{{field.name}}], {{loop.index0}});{% endif %}{% endfor %}
 
         msg.calculateChecksum();
 
         return msg;
     }
 }
+{% endfor %}
