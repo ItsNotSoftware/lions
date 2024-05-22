@@ -14,10 +14,12 @@ License:
 """
 
 import sys
+import colorama
 from lions.cpp_gen.cpp_generator import CppGenerator
 from lions.yaml_parser import YamlParser
-import colorama
 from colorama import Fore, Style
+from lions.js_gen.js_generator import JsGenerator
+from lions.errors import InvalidTargetLanguageError
 
 
 def print_title():
@@ -57,9 +59,9 @@ def main():
         # targert language help
         print(
             """
-        Target Language:
-            cpp - C++
-            js - JavaScript
+    Target Language:
+        cpp - C++
+        js - JavaScript
         """
         )
 
@@ -72,10 +74,18 @@ def main():
 
     # Initialize the parser and generator objects
     parser = YamlParser(msg_files_dir)
-    cpp_generator = CppGenerator(output_dir)
+    code_generator = None
+
+    # Check the target language and initialize the corresponding code generator
+    if sys.argv[3] == "cpp":
+        code_generator = CppGenerator(output_dir)
+    elif sys.argv[3] == "js":
+        code_generator = JsGenerator(output_dir)
+    else:
+        raise InvalidTargetLanguageError(sys.argv[3])
 
     # Parse the message files and generate the corresponding C++ files
     for filename, msgs in parser.parse_file():
-        cpp_generator.generate_msg_files(filename, msgs)
+        code_generator.generate_msg_files(filename, msgs)
 
     print_success_message()
