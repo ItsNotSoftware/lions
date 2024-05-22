@@ -32,7 +32,7 @@ class {{msg.name | capitalize}}Msg {
 {% endfor %}    }
 
     static fromLMsg(msg) {
-        const dataView = new DataView({{msg.payload_size}}); {% for field in msg.fields %}
+        const dataView = new DataView(msg.payload); {% for field in msg.fields %}
         {% if field.type == 'string' %}const {{field.name}} = new TextDecoder().decode(msg.payload.slice({{field.start}}, {{field.start}} + {{field.size}}));
         {% else %}const {{field.name}} = dataView.get{{field.type | capitalize}}({{field.start}}, true);  // true for little-endian{% endif %}{% endfor %}
 
@@ -47,7 +47,7 @@ class {{msg.name | capitalize}}Msg {
         msg.header.next_hop = next_hop;
         msg.header.msg_id = msg_id.{{msg.name}};
         
-        const dataView = new DataView({{msg.payload_size}}); {% for field in msg.fields %}
+        const dataView = new DataView(msg.payload){% for field in msg.fields %}
         {% if field.type == 'string' %}new TextEncoder().encode(this.{{field.name}}).forEach((byte, i) => msg.payload[{{field.start}} + i] = byte);
         msg.payload[{{field.start}} + {{field.size}}] = 0;
         {% else %}dataView.set{{field.type | capitalize}}({{field.start}}, this.{{field.name}}, true);  // true for little-endian{% endif %}{% endfor %}
