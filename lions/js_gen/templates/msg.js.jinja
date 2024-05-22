@@ -22,7 +22,7 @@ const msg_id = {
 {% endfor %}};
 
 const msg_period = {
-{% for msg in msgs %}    {{msg.name}}: {{msg.period}}{% if not loop.last %},{% endif %}
+{% for msg in msgs %}    {{msg.name}}: {{msg.period}}{% if not loop.last %},{% endif %} 
 {% endfor %}};
 
 {% for msg in msgs %}
@@ -31,24 +31,26 @@ class {{msg.name | capitalize}}Msg {
 {% for field in msg.fields %}        this.{{field.name}} = {{field.name}};
 {% endfor %}    }
 
-    static fromLMsg(msg) { {% for field in msg.fields %} 
+    static fromLMsg(msg) {
+        const dataView = new DataView(msg.payload.buffer); {% for field in msg.fields %}
         {% if field.type == 'string' %}const {{field.name}} = new TextDecoder().decode(msg.payload.slice({{loop.index0}}, {{loop.index0}} + {{field.size}}));
-        {% else %}const {{field.name}} = new {{field.type}}Array(msg.payload.buffer.slice({{loop.index0}}, {{loop.index0}} + {{field.size}}))[0]; {% endif %}{% endfor %}
+        {% else %}const {{field.name}} = dataView.get{{field.type | capitalize}}({{loop.index0}}, true);  // true for little-endian{% endif %}{% endfor %}
 
         return new {{msg.name | capitalize}}Msg({% for field in msg.fields %}{{field.name}}{% if not loop.last %}, {% endif %}{% endfor %});
     }
 
     encode(src, dst, next_hop) {
         const msg = new LMsg({{msg.size}});
-
+        
         msg.header.src = src;
         msg.header.dst = dst;
         msg.header.next_hop = next_hop;
         msg.header.msg_id = msg_id.{{msg.name}};
-        {% for field in msg.fields %}
+        
+        const dataView = new DataView(msg.payload.buffer); {% for field in msg.fields %}
         {% if field.type == 'string' %}new TextEncoder().encode(this.{{field.name}}).forEach((byte, i) => msg.payload[{{loop.index0}} + i] = byte);
         msg.payload[{{loop.index0}} + {{field.size}}] = 0;
-        {% else %}new {{field.type}}Array(msg.payload.buffer).set([this.{{field.name}}], {{loop.index0}});{% endif %}{% endfor %}
+        {% else %}dataView.set{{field.type | capitalize}}({{loop.index0}}, this.{{field.name}}, true);  // true for little-endian{% endif %}{% endfor %}
 
         msg.calculateChecksum();
 
