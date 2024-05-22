@@ -31,7 +31,7 @@
  class LMsg {
     constructor(payload_size = 0) {
         this.header = new Header();
-        this.payload = new Array(payload_size).fill(0);
+        this.payload = new DataView(new ArrayBuffer(payload_size));
         this.payload_size = payload_size;
     }
 

@@ -43,14 +43,14 @@ class JsGenerator:
         """
 
         cpp_to_js_types = {
-            "int8": "Int8",
-            "uint8": "Uint8",
-            "int16": "Int16",
-            "uint16": "Uint16",
-            "int32": "Int32",
-            "uint32": "Uint32",
-            "int64": "BigInt64",
-            "uint64": "BigUint64",
+            "int8_t": "Int8",
+            "uint8_t": "Uint8",
+            "int16_t": "Int16",
+            "uint16_t": "Uint16",
+            "int32_t": "Int32",
+            "uint32_t": "Uint32",
+            "int64_t": "BigInt64",
+            "uint64_t": "BigUint64",
             "float": "Float32",
             "double": "Float64",
             "string": "string",
@@ -78,10 +78,12 @@ class JsGenerator:
             filename (str): The filename of the message files
             msgs (list[LMsg]): The list of messages to generate
         """
+        msgs = self.convert_to_js_types(msgs)
+
         # Dictionary to pass to the jinja templates
         jinja_dict = {"filename": filename, "msgs": msgs}
 
         file = f"{self.output_dir}/{filename}"
-        with open(f"{file}.js", "w") as f:
+        with open(f"{file}_lmsgs.js", "w") as f:
             f.write(self.class_js_template.render(jinja_dict))
             print_generation_status(self.output_dir, f"{filename}.js")

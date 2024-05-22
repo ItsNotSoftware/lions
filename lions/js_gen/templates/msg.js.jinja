@@ -58,3 +58,5 @@ class {{msg.name | capitalize}}Msg {
     }
 }
 {% endfor %}
+
+export { msg_id, msg_period, {% for msg in msgs %}{{msg.name | capitalize}}Msg{% if not loop.last %}, {% endif %}{% endfor %} };
