@@ -23,6 +23,12 @@ const msg_id = {
     PING: 3
 };
 
+const msg_period = {
+    ACCELEROMETER: 100,
+    MICROPHONE: 100,
+    PING: 100
+};
+
 class AccelerometerMsg {
     constructor(acc_x = 0, acc_y = 0, acc_z = 0) {
         this.acc_x = acc_x;
@@ -74,12 +80,9 @@ class MicrophoneMsg {
         msg.header.msg_id = msg_id.MICROPHONE;
 
         new Int16Array(msg.payload.buffer).set([this.sound_level]);
-        const encodedMessage = new TextEncoder().encode(this.message);
-        msg.payload.set(encodedMessage, 2);
 
-        if (encodedMessage.length < 100) {
-            msg.payload[2 + encodedMessage.length] = 0; // Null-terminate string
-        }
+        new TextEncoder().encode(this.message).forEach((byte, i) => msg.payload[2 + i] = byte);
+        msg.payload[102] = 0;
 
         msg.calculateChecksum();
 

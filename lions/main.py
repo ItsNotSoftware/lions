@@ -51,8 +51,18 @@ def main():
     colorama.init(autoreset=True)
 
     # Check if the number of arguments is correct
-    if len(sys.argv) != 3:
-        print("Usage: lions <msg_files_dir> <output_dir>")
+    if len(sys.argv) != 4:
+        print("Usage: lions <msg_files_dir> <output_dir> <target_language>")
+
+        # targert language help
+        print(
+            """
+        Target Language:
+            cpp - C++
+            js - JavaScript
+        """
+        )
+
         sys.exit(1)
 
     msg_files_dir = sys.argv[1]
