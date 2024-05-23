@@ -1,5 +1,5 @@
 import pytest
-from lions.cpp_gen.cpp_generator import CppGenerator
+from lions.js_gen.js_generator import JsGenerator
 from lions.yaml_parser import YamlParser
 from lions.lmsg import _used_ids, _used_names
 import functools
@@ -33,26 +33,24 @@ def compare_files(file1, file2):
 
 
 @reset
-def test_cpp_gen():
+def test_js_gen():
     msg_files_dir = "tests/test_files/single_lmsg_file2"
     output_dir = "tests/test_files/single_lmsg_file2/output"
 
     parser = YamlParser(msg_files_dir)
-    generator = CppGenerator(output_dir)
+    generator = JsGenerator(output_dir)
 
     for filename, msgs in parser.parse_file():
         generator.generate_msg_files(filename, msgs)
 
     expected_files = [
-        "lions.hpp",
-        "lions.cpp",
-        "multiple_lmsg.hpp",
-        "multiple_lmsg.cpp",
+        "lions.js",
+        "multiple_lmsg.js",
     ]
 
     for file_name in expected_files:
         output_file = output_dir + "/" + file_name
-        expected_file = msg_files_dir + "/expected_output/c++/" + file_name
+        expected_file = msg_files_dir + "/expected_output/js/" + file_name
 
         assert compare_files(
             output_file, expected_file
