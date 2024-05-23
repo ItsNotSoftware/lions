@@ -22,7 +22,7 @@ const msg_id = {
 {% endfor %}};
 
 const msg_period = {
-{% for msg in msgs %}    {{msg.name}}: {{msg.period}}{% if not loop.last %},{% endif %} 
+{% for msg in msgs %}    {{msg.name}}: {{msg.period}}{% if not loop.last %},{% endif %}
 {% endfor %}};
 
 {% for msg in msgs %}
@@ -32,8 +32,8 @@ class {{msg.name | capitalize}}Msg {
 {% endfor %}    }
 
     static fromLMsg(msg) {
-        const dataView = new DataView(msg.payload); {% for field in msg.fields %}
-        {% if field.type == 'string' %}const {{field.name}} = new TextDecoder().decode(msg.payload.slice({{field.start}}, {{field.start}} + {{field.size}}));
+        const dataView = new DataView(msg.payload);{% for field in msg.fields %}
+        {% if field.type == 'string' %}const {{field.name}} = new TextDecoder().decode(msg.payload.slice({{field.start}}, {{field.start}} + {{field.size}})).replace(/\0.*$/,"");
         {% else %}const {{field.name}} = dataView.get{{field.type | capitalize}}({{field.start}}, true);  // true for little-endian{% endif %}{% endfor %}
 
         return new {{msg.name | capitalize}}Msg({% for field in msg.fields %}{{field.name}}{% if not loop.last %}, {% endif %}{% endfor %});
@@ -47,9 +47,16 @@ class {{msg.name | capitalize}}Msg {
         msg.header.next_hop = next_hop;
         msg.header.msg_id = msg_id.{{msg.name}};
         
-        const dataView = new DataView(msg.payload){% for field in msg.fields %}
-        {% if field.type == 'string' %}new TextEncoder().encode(this.{{field.name}}).forEach((byte, i) => msg.payload[{{field.start}} + i] = byte);
-        msg.payload[{{field.start}} + {{field.size}}] = 0;
+        const dataView = new DataView(msg.payload);{% for field in msg.fields %}
+        {% if field.type == 'string' %}
+        const encoded{{field.name | capitalize}} = new TextEncoder().encode(this.{{field.name}});
+        for (let i = 0; i < Math.min(encoded{{field.name | capitalize}}.length, {{field.size}}); i++) {
+            dataView.setUint8({{field.start}} + i, encoded{{field.name | capitalize}}[i]);
+        }
+        
+        if (encoded{{field.name | capitalize}}.length < {{field.size}}) {
+            dataView.setUint8({{field.start}} + encoded{{field.name | capitalize}}.length, 0);
+        }
         {% else %}dataView.set{{field.type | capitalize}}({{field.start}}, this.{{field.name}}, true);  // true for little-endian{% endif %}{% endfor %}
 
         msg.calculateChecksum();
