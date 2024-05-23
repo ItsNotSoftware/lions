@@ -93,3 +93,11 @@ class MsgFilesNotFoundError(Exception):
     def __init__(self, dir):
         message = f'Error: No ".lmsg.yaml" files found in the directory "{dir}".'
         super().__init__(Fore.RED + message)
+
+
+class InvalidTargetLanguageError(Exception):
+    """Exception raised when the target language is invalid."""
+
+    def __init__(self, target_language):
+        message = f'Error: Invalid target language "{target_language}". Supported languages: "cpp", "js".'
+        super().__init__(Fore.RED + message)

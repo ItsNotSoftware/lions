@@ -1,4 +1,4 @@
-#include "generated_code/my_messages_lmsgs.hpp"  // Include the generated messages.
+#include "generated_code/my_messages_lmsg.hpp"  // Include the generated messages.
 
 // Define a constant for the device identifier used in the message.
 constexpr uint8_t this_device_id = 1;

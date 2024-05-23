@@ -7,9 +7,9 @@ from lions.errors import *
 
 def reset(func):
     def wrapper(*args, **kwargs):
-        result = func(*args, **kwargs)
         _used_ids.clear()
         _used_names.clear()
+        result = func(*args, **kwargs)
         return result
 
     return wrapper

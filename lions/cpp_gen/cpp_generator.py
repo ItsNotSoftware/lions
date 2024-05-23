@@ -66,13 +66,13 @@ class CppGenerator:
                 if field.type == "string":
                     field.type = "std::string"
 
-        with open(f"{file}_lmsgs.hpp", "w") as f_hpp, open(
-            f"{file}_lmsgs.cpp", "w"
+        with open(f"{file}_lmsg.hpp", "w") as f_hpp, open(
+            f"{file}_lmsg.cpp", "w"
         ) as f_cpp:
             # hpp
             f_hpp.write(self.msg_hpp_template.render(jinja_dict))
-            print_generation_status(self.output_dir, f"{filename}_lmsgs.hpp")
+            print_generation_status(self.output_dir, f"{filename}_lmsg.hpp")
 
             # cpp
             f_cpp.write(self.msg_cpp_template.render(jinja_dict))
-            print_generation_status(self.output_dir, f"{filename}_lmsgs.cpp\n")
+            print_generation_status(self.output_dir, f"{filename}_lmsg.cpp\n")
