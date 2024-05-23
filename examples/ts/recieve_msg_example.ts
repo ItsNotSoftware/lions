@@ -2,33 +2,37 @@ import {
     AccelerometerMsg,
     MicrophoneMsg,
     PingMsg,
-} from "./generated_code/my_messages_lmsg.js";
-import { LMsg } from "./generated_code/lmsg.js";
+    msg_id
+} from "./generated_code/my_messages_lmsg.ts";
+import { LMsg } from "./generated_code/lions.ts";
 
 const this_device_id = 1;
-const brodcast_id = 255;
+const broadcast_id = 255;
+const routing_table = [0, 2, 3, 4, 5, 6, 7, 8, 9, 10];
 
 // ====================================================================================
 // User created functions to send messages depending on app specific msg implementation
 //
 // NOTE: this is just an example, you can use any other method to send the messages.
 
-function recieve_byte() {}
+function recieveByte(): number {return 0;}
+function dataAvailable(): boolean {return true;}
+function senMsg(msg: LMsg): void {}
 
-function recieve_msg() {
+function receiveMsg() {
     let msg = new LMsg();
 
-    msg.header.src = recieve_byte();
-    msg.header.dst = recieve_byte();
-    msg.header.msg_id = recieve_byte();
-    msg.header.next_hop = recieve_byte();
+    msg.header.src = recieveByte();
+    msg.header.dst = recieveByte();
+    msg.header.msg_id = recieveByte();
+    msg.header.next_hop = recieveByte();
 
-    const checksum_low = recieve_byte();
-    const checksum_high = recieve_byte();
-    msg.checksum = (checksum_high << 8) | checksum_low;
+    const checksum_low = recieveByte();
+    const checksum_high = recieveByte();
+    msg.header.checksum = (checksum_high << 8) | checksum_low;
 
-    while (data_available()) {
-        msg.payload[msg.payload_size++] = recieve_byte();
+    while (dataAvailable()) {
+        msg.payload[msg.payload_size++] = recieveByte();
     }
 
     return msg;
@@ -45,11 +49,11 @@ function recieve_msg() {
  *
  * 4. Decode the message based on the message ID, and construct the proper message object.
  */
-function receive_and_decode_example() {
-    const received_msg = receive_msg();
+function receiveAndDecodeExample() {
+    const received_msg = receiveMsg();
 
     // Check if the message has a valid checksum.
-    if (!received_msg.valid_checksum()) {
+    if (!received_msg.validChecksum()) {
         // Invalid message, do something.
     }
 
@@ -60,7 +64,7 @@ function receive_and_decode_example() {
 
     if (to_forward) {
         received_msg.header.next_hop = routing_table[received_msg.header.dst]; // Forward the message to the next hop.
-        send_msg(received_msg);
+        senMsg(received_msg);
         return;
     }
 
