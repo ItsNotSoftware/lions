@@ -60,7 +60,7 @@ The message structure is composed of a 6-byte header, followed by a variable-len
 
 -   [C++](https://github.com/ItsNotSoftware/lions/blob/main/examples/c++/generated_code/lions.hpp)
 -   [JavaScript](https://github.com/ItsNotSoftware/lions/blob/main/examples/js/generated_code/lions.js)
--   [JavaScript](https://github.com/ItsNotSoftware/lions/blob/main/examples/ts/generated_code/lions.ts)
+-   [TypeScript](https://github.com/ItsNotSoftware/lions/blob/main/examples/ts/generated_code/lions.ts)
 
 ## Defining Messages
 
