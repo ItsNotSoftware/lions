@@ -39,7 +39,7 @@ lions::LMsg recive_msg() {
  *
  * 4. Decode the message based on the message ID, and construct the proper message object.
  */
-void receive_and_decode_example(uint8_t dst_id, uint8_t next_hop) {
+void receive_and_decode_example() {
     auto received_msg = recive_msg();
 
     // Check if the message has a valid checksum.
