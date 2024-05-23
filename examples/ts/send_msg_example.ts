@@ -2,8 +2,8 @@ import {
     AccelerometerMsg,
     MicrophoneMsg,
     PingMsg,
-} from "./generated_code/my_messages_lmsg.js";
-import { LMsg } from "./generated_code/lions.js";
+} from "./generated_code/my_messages_lmsg.ts";
+import { LMsg } from "./generated_code/lions.ts";
 
 const this_device_id = 1;
 const broadcast_id = 255;
@@ -12,17 +12,17 @@ const broadcast_id = 255;
 // User created functions to send messages depending on the hardware/protocol.
 //
 // NOTE: this is just an example, you can use any other method to send the messages.
-function sendByte(byte) {}
+function sendByte(byte: number) {}
 
-function sendArray(data, size) {}
+function sendArray(data: ArrayBuffer, size: number) {}
 
 // Example of a possible function to send a full message.
-function sendMsg(encoded_msg) {
+function sendMsg(encoded_msg: LMsg) {
     // Send each component of the message header.
-    sendByte(encoded_msg.header.src); // Source device ID
-    sendByte(encoded_msg.header.dst); // Destination device ID
-    sendByte(encoded_msg.header.msg_id); // Message ID
-    sendByte(encoded_msg.header.next_hop); // Next hop ID
+    sendByte(encoded_msg.header.src);       // Source device ID
+    sendByte(encoded_msg.header.dst);       // Destination device ID
+    sendByte(encoded_msg.header.msg_id);    // Message ID
+    sendByte(encoded_msg.header.next_hop);  // Next hop ID
 
     const checksum_low = encoded_msg.header.checksum & 0x00ff;
     const checksum_high = (encoded_msg.header.checksum & 0xff00) >> 8;
@@ -40,7 +40,7 @@ function sendMsg(encoded_msg) {
  * 2. Encode the message object into a LMsg object. (Header + Payload binary representation)
  * 3. Send the LMsg object using your hardware/protocol.
  */
-function encodeAndSendExample(dst_id, next_hop) {
+function encodeAndSendExample(dst_id: number, next_hop: number) {
     // Microphone message example: sound level of -23, and a greeting message.
     const mic_msg = new MicrophoneMsg(-23, "Hello World!");
     const encoded_mic_msg = mic_msg.encode(this_device_id, dst_id, next_hop);
@@ -48,19 +48,11 @@ function encodeAndSendExample(dst_id, next_hop) {
 
     // Accelerometer message example: acceleration readings along three axes.
     const accel_msg = new AccelerometerMsg(1.0, 2.0, 3.0);
-    const encoded_accel_msg = accel_msg.encode(
-        this_device_id,
-        dst_id,
-        next_hop
-    );
+    const encoded_accel_msg = accel_msg.encode(this_device_id, dst_id, next_hop);
     sendMsg(encoded_accel_msg);
 
     // Ping message example: a simple broadcast message to inform device availability.
     const ping_msg = new PingMsg();
-    const encoded_ping_msg = ping_msg.encode(
-        this_device_id,
-        broadcast_id,
-        broadcast_id
-    );
+    const encoded_ping_msg = ping_msg.encode(this_device_id, broadcast_id, broadcast_id);
     sendMsg(encoded_ping_msg);
 }

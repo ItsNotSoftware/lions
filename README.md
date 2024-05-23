@@ -60,6 +60,7 @@ The message structure is composed of a 6-byte header, followed by a variable-len
 
 -   [C++](https://github.com/ItsNotSoftware/lions/blob/main/examples/c++/generated_code/lions.hpp)
 -   [JavaScript](https://github.com/ItsNotSoftware/lions/blob/main/examples/js/generated_code/lions.js)
+-   [JavaScript](https://github.com/ItsNotSoftware/lions/blob/main/examples/ts/generated_code/lions.ts)
 
 ## Defining Messages
 
@@ -159,6 +160,7 @@ For each message type defined in the YAML files, the LIONS compiler generates a 
 
 -   [C++](https://github.com/ItsNotSoftware/lions/blob/main/examples/c%2B%2B/generated_code/my_messages_lmsg.hpp)
 -   [JavaScript](https://github.com/ItsNotSoftware/lions/blob/main/examples/js/generated_code/my_messages_lmsg.js)
+-   [TypeScript](https://github.com/ItsNotSoftware/lions/blob/main/examples/ts/generated_code/my_messages_lmsg.ts)
 
 ## Examples
 
@@ -168,6 +170,6 @@ For each message type defined in the YAML files, the LIONS compiler generates a 
 
 -   [x] C++
 -   [x] JavaScript
--   [ ] TypeScript
+-   [x] TypeScript
 -   [ ] C
 -   [ ] Python

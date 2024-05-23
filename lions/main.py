@@ -16,6 +16,7 @@ License:
 import sys
 import colorama
 from lions.cpp_gen.cpp_generator import CppGenerator
+from lions.ts_gen.ts_generator import TsGenerator
 from lions.yaml_parser import YamlParser
 from colorama import Fore, Style
 from lions.js_gen.js_generator import JsGenerator
@@ -62,6 +63,7 @@ def main():
     Target Language:
         cpp - C++
         js - JavaScript
+        ts - TypeScript
         """
         )
 
@@ -81,6 +83,8 @@ def main():
         code_generator = CppGenerator(output_dir)
     elif sys.argv[3] == "js":
         code_generator = JsGenerator(output_dir)
+    elif sys.argv[3] == "ts":
+        code_generator = TsGenerator(output_dir)
     else:
         raise InvalidTargetLanguageError(sys.argv[3])
 

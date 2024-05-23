@@ -39,6 +39,7 @@ class MsgField(BaseModel):
     type: str
     size: int
     start: int = 0
+    buff_type: str = ""
 
     @field_validator("size")
     @classmethod

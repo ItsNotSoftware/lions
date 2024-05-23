@@ -14,7 +14,7 @@ void send_msg(lions::LMsg);
 
 uint8_t recieve_byte();
 
-lions::LMsg recive_msg() {
+lions::LMsg Receive_msg() {
     lions::LMsg msg(0);
     msg.header.src = recieve_byte();
     msg.header.dst = recieve_byte();
@@ -40,7 +40,7 @@ lions::LMsg recive_msg() {
  * 4. Decode the message based on the message ID, and construct the proper message object.
  */
 void receive_and_decode_example() {
-    auto received_msg = recive_msg();
+    auto received_msg = Receive_msg();
 
     // Check if the message has a valid checksum.
     if (!received_msg.valid_checksum()) {

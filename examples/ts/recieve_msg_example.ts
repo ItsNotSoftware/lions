@@ -2,9 +2,9 @@ import {
     AccelerometerMsg,
     MicrophoneMsg,
     PingMsg,
-    msg_id,
-} from "./generated_code/my_messages_lmsg.js";
-import { LMsg } from "./generated_code/lionslmsg.js";
+    msg_id
+} from "./generated_code/my_messages_lmsg.ts";
+import { LMsg } from "./generated_code/lions.ts";
 
 const this_device_id = 1;
 const broadcast_id = 255;
@@ -15,9 +15,11 @@ const routing_table = [0, 2, 3, 4, 5, 6, 7, 8, 9, 10];
 //
 // NOTE: this is just an example, you can use any other method to send the messages.
 
-function recieveByte() {}
+function recieveByte(): number {return 0;}
+function dataAvailable(): boolean {return true;}
+function senMsg(msg: LMsg): void {}
 
-function recieveMsg() {
+function receiveMsg() {
     let msg = new LMsg();
 
     msg.header.src = recieveByte();
@@ -29,7 +31,7 @@ function recieveMsg() {
     const checksum_high = recieveByte();
     msg.header.checksum = (checksum_high << 8) | checksum_low;
 
-    while (data_available()) {
+    while (dataAvailable()) {
         msg.payload[msg.payload_size++] = recieveByte();
     }
 
@@ -48,7 +50,7 @@ function recieveMsg() {
  * 4. Decode the message based on the message ID, and construct the proper message object.
  */
 function receiveAndDecodeExample() {
-    const received_msg = recieveMsg();
+    const received_msg = receiveMsg();
 
     // Check if the message has a valid checksum.
     if (!received_msg.validChecksum()) {
@@ -62,7 +64,7 @@ function receiveAndDecodeExample() {
 
     if (to_forward) {
         received_msg.header.next_hop = routing_table[received_msg.header.dst]; // Forward the message to the next hop.
-        send_msg(received_msg);
+        senMsg(received_msg);
         return;
     }
 
