@@ -24,29 +24,29 @@
 
 namespace lions {
 
-   namespace msg_id {
-{% for msg in msgs %}   constexpr uint8_t {{msg.name|upper}} = {{msg.id}};
-{% endfor %}   }  // namespace msg_id
+namespace msg_id {
+{% for msg in msgs %}constexpr uint8_t {{msg.name|upper}} = {{msg.id}};
+{% endfor %}}  // namespace msg_id
    
-   namespace msg_period {
-{% for msg in msgs %}   constexpr uint32_t {{msg.name|upper}} = {{msg.period}};
-{% endfor %}   }  // namespace msg_period
+namespace msg_period {
+{% for msg in msgs %}constexpr uint32_t {{msg.name|upper}} = {{msg.period}};
+{% endfor %}}  // namespace msg_period
 
 {% for msg in msgs %}
 class {{msg.name | capitalize }}Msg {
-   public:
-    Header header;
-    {% for field in msg.fields %}
-    {{field.type}} {{field.name}};{% endfor %}
+  public:
+   Header header;
+   {% for field in msg.fields %}
+   {{field.type}} {{field.name}};{% endfor %}
     
-    /** Create a new {{msg.name}} msg */
-    {{ msg.name | capitalize }}Msg({% for field in msg.fields %}const {{ field.type }} {{ field.name }}{% if not loop.last %}, {% endif %}{% endfor %});
+   /** Create a new {{msg.name}} msg */
+   {{ msg.name | capitalize }}Msg({% for field in msg.fields %}const {{ field.type }} {{ field.name }}{% if not loop.last %}, {% endif %}{% endfor %});
     
-    /** Decode LMsg to {{msg.name}} msg */
-    {{msg.name | capitalize}}Msg(const LMsg &msg); 
+   /** Decode LMsg to {{msg.name}} msg */
+   {{msg.name | capitalize}}Msg(const LMsg &msg); 
     
-    /** Encode {{msg.name}} msg to LMsg */
-    LMsg encode(const uint8_t src, const uint8_t dst, const uint8_t next_hop);
+   /** Encode {{msg.name}} msg to LMsg */
+   LMsg encode(const uint8_t src, const uint8_t dst, const uint8_t next_hop);
 };
 {% endfor %}
 
