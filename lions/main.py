@@ -77,7 +77,7 @@ def main():
     code_generator = None
 
     # Check the target language and initialize the corresponding code generator
-    if sys.argv[3] == "cpp":
+    if sys.argv[3] == "c++" or sys.argv[3] == "cpp":
         code_generator = CppGenerator(output_dir)
     elif sys.argv[3] == "js":
         code_generator = JsGenerator(output_dir)

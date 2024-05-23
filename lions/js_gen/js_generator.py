@@ -84,6 +84,6 @@ class JsGenerator:
         jinja_dict = {"filename": filename, "msgs": msgs}
 
         file = f"{self.output_dir}/{filename}"
-        with open(f"{file}_lmsgs.js", "w") as f:
+        with open(f"{file}_lmsg.js", "w") as f:
             f.write(self.class_js_template.render(jinja_dict))
             print_generation_status(self.output_dir, f"{filename}.js")
