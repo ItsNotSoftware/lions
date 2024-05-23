@@ -4,18 +4,18 @@
 
 <!-- TOC start (generated with https://github.com/derlin/bitdowntoc) -->
 
--   [Description](#lions)
+-   [Description](#description)
 -   [Install](#install)
 -   [Usage](#usage)
 -   [Raw Message format](#raw-message-format)
-    -   [C++ representation](#c-representation)
+    -   [Code representation](#code-representation)
 -   [Defining Messages](#defining-messages)
     -   [Structure of Message Files](#structure-of-message-files)
-    -   [Generated Code Overview](#generated-code-overview) - [Constants](#constants)
-    -   [Message Class Structure](#message-class-structure)
+    -   [Generated code](#generated-code)
+        -   [Constants](#constants)
+        -   [Message struct/class](#message-structclass)
 -   [Examples](#examples)
--   [Target language support](#target-language-support)
-
+-   [Target Language Support](#target-language-support)
 <!-- TOC end -->
 
 <!-- TOC --><a name="lions"></a>
@@ -56,7 +56,7 @@ The message structure is composed of a 6-byte header, followed by a variable-len
 | 4-5        | checksum | 2            | Checksum for error checking                       |
 | 6-249      | payload  | 244          | Actual data payload                               |
 
-### Raw Message code representation
+### Code representation
 
 -   [C++](https://github.com/ItsNotSoftware/lions/blob/main/examples/c++/generated_code/lions.hpp)
 -   [JavaScript](https://github.com/ItsNotSoftware/lions/blob/main/examples/js/generated_code/lions.js)
@@ -116,7 +116,7 @@ ping:
     description: "Ping message"
 ```
 
-### Generated Code
+### Generated code
 
 The LIONS compiler auto-generates code to facilitate handling, encoding and decoding of messages defined in `.lmsg.yaml` files. Below is an example of how part of the generated code might look for the yaml file above.
 
@@ -140,7 +140,7 @@ namespace msg_period {
 }  // namespace msg_period
 ```
 
-#### Message Struct/Class
+#### Message struct/class
 
 For each message type defined in the YAML files, the LIONS compiler generates a corresponding struct/class. This class includes the specific fields of the message, two constructors, and an encode method.
 
@@ -156,6 +156,7 @@ For each message type defined in the YAML files, the LIONS compiler generates a 
     - Converts the structured message back into its raw binary form (`LMsg`) for transmission. This method ensures that the message is properly packaged with its header and payload according to the protocol specifications before being sent over the network.
 
 ---
+
 -   [C++](https://github.com/ItsNotSoftware/lions/blob/main/examples/c%2B%2B/generated_code/my_messages_lmsg.hpp)
 -   [JavaScript](https://github.com/ItsNotSoftware/lions/blob/main/examples/js/generated_code/my_messages_lmsg.js)
 
@@ -163,7 +164,7 @@ For each message type defined in the YAML files, the LIONS compiler generates a 
 
 [Examples](https://github.com/ItsNotSoftware/lions/tree/main/examples)
 
-## Target language support
+## Target Language Support
 
 -   [x] C++
 -   [x] JavaScript
