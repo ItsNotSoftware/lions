@@ -36,10 +36,12 @@ This protocol is ideal for developers looking to implement efficient, data-const
 
 ## Usage
 
-    $ lions [msg_files_dir] [output_dir]
+    $ lions <msg_files_dir> <output_dir> <target_language>
 
 -   **msg_files_dir**: Directory containing your .lmsg.yaml files
 -   **output_dir**: Directory to place the generated code
+-   **target_language**: Target language for the generated code
+    -   cpp; c; js; ts; py
 
 ## Raw Message format
 
@@ -54,36 +56,10 @@ The message structure is composed of a 6-byte header, followed by a variable-len
 | 4-5        | checksum | 2            | Checksum for error checking                       |
 | 6-249      | payload  | 244          | Actual data payload                               |
 
-### C++ representation
+### Raw Message code representation
 
-```C++
-struct Header {
-    uint8_t src;
-    uint8_t dst;
-    uint8_t next_hop;
-    uint8_t msg_id;
-
-    union{
-        uint16_t checksum;
-
-        struct{
-            uint8_t checksum_low;
-            uint8_t checksum_high;
-        };
-    };
-};
-
-class LMsg {
-   public:
-    Header header;
-    uint8_t payload[MAX_PAYLOAD_SIZE];
-    uint8_t payload_size;
-
-    LMsg(uint8_t payload_size = 0);
-    uint16_t calculate_checksum();
-    bool valid_checksum();
-};
-```
+-   [C++](https://github.com/ItsNotSoftware/lions/blob/main/examples/c++/generated_code/lions.hpp)
+-   [JavaScript](https://github.com/ItsNotSoftware/lions/blob/main/examples/js/generated_code/lions.js)
 
 ## Defining Messages
 
@@ -140,13 +116,15 @@ ping:
     description: "Ping message"
 ```
 
-### Generated Code Overview
+### Generated Code
 
 The LIONS compiler auto-generates code to facilitate handling, encoding and decoding of messages defined in `.lmsg.yaml` files. Below is an example of how part of the generated code might look for the yaml file above.
 
 #### Constants
 
 The code defines namespaces to hold constants for message IDs and periods, ensuring easy reference throughout the codebase:
+
+C++ example:
 
 ```C++
 namespace msg_id {
@@ -162,37 +140,27 @@ namespace msg_period {
 }  // namespace msg_period
 ```
 
-#### Message Class Structure
+#### Message Struct/Class
 
-For each message type defined in the YAML files, the LIONS compiler generates a corresponding C++ class. This class includes the specific fields of the message, two constructors, and an encode method.
+For each message type defined in the YAML files, the LIONS compiler generates a corresponding struct/class. This class includes the specific fields of the message, two constructors, and an encode method.
 
--   **Constructors**:
+1. **Initialization Constructor**
 
-    1. **Initialization Constructor**: Used to create a new instance of the message class with predefined field values. This constructor initializes the message with specific data relevant to its type.
-    2. **Decoding Constructor**: Transforms a generic, raw-form message (`LMsg`) into the structured format of the class. This conversion facilitates easier manipulation and interpretation of the message contents within the application.
+    - Used to create a new instance of the message class with predefined field values. This constructor initializes the message with specific data relevant to its type.
 
--   **Encode Method**: Converts the structured message back into its raw binary form (`LMsg`) for transmission. This method ensures that the message is properly packaged with its header and payload according to the protocol specifications before being sent over the network.
+2. **Decoding Constructor**
 
-```C++
-class AccelerometerMsg {
-   public:
-    Header header;  // Header as defined in the base LIONS framework
+    - Transforms a generic, raw-form message (`LMsg`) into the structured format of the class. This conversion facilitates easier manipulation and interpretation of the message contents within the application.
 
-    float acc_x;  // Acceleration in x-axis
-    float acc_y;  // Acceleration in y-axis
-    float acc_z;  // Acceleration in z-axis
+3. **Encode Method**
+    - Converts the structured message back into its raw binary form (`LMsg`) for transmission. This method ensures that the message is properly packaged with its header and payload according to the protocol specifications before being sent over the network.
 
-    /** Create a new accelerometer msg */
-    AccelerometerMsg(const float acc_x, const float acc_y, const float acc_z);
+---
 
-    /** Decode LMsg to accelerometer msg */
-    AccelerometerMsg(const LMsg &msg);
+Examples:
 
-    /** Encode accelerometer msg to LMsg */
-    LMsg encode(const uint8_t src, const uint8_t dst, const uint8_t next_hop);
-};
-
-```
+-   [C++](https://github.com/ItsNotSoftware/lions/blob/main/examples/c%2B%2B/generated_code/my_messages_lmsg.hpp)
+-   [JavaScript](https://github.com/ItsNotSoftware/lions/blob/main/examples/js/generated_code/my_messages_lmsg.js)
 
 ## Examples
 
@@ -201,6 +169,7 @@ class AccelerometerMsg {
 ## Target language support
 
 -   [x] C++
+-   [x] JavaScript
+-   [ ] TypeScript
 -   [ ] C
--   [ ] JavaScript
 -   [ ] Python
