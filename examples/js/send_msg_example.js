@@ -23,8 +23,11 @@ function sendMsg(encoded_msg) {
     sendByte(encoded_msg.header.dst); // Destination device ID
     sendByte(encoded_msg.header.msg_id); // Message ID
     sendByte(encoded_msg.header.next_hop); // Next hop ID
-    sendByte(encoded_msg.header.checksum_low);
-    sendByte(encoded_msg.header.checksum_high);
+
+    const checksum_low = encoded_msg.header.checksum & 0x00ff;
+    const checksum_high = (encoded_msg.header.checksum & 0xff00) >> 8;
+    sendByte(checksum_low);
+    sendByte(checksum_high);
 
     // Send the payload.
     sendArray(encoded_msg.payload, encoded_msg.payload_size);
