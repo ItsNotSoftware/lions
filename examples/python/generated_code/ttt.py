@@ -1,5 +1,5 @@
 """
-@file lions.py
+@file lions_.py
 
 @brief LMsg definition.
 LMsg is a class that represents a message in the Lions protocol.
