@@ -99,5 +99,5 @@ class InvalidTargetLanguageError(Exception):
     """Exception raised when the target language is invalid."""
 
     def __init__(self, target_language):
-        message = f'Error: Invalid target language "{target_language}". Supported languages: "cpp", "js".'
+        message = f'Error: Invalid target language "{target_language}".'
         super().__init__(Fore.RED + message)
