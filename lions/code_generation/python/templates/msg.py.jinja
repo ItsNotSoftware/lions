@@ -37,28 +37,28 @@ class {{ msg.name | capitalize }}Msg:
     def from_lmsg(msg: LMsg) -> "{{ msg.name | capitalize }}Msg":
         {% for field in msg.fields %}
         {% if field.type == 'str' %}{{ field.name }} = msg.payload[{{ field.start }}:{{ field.start + field.size }}].decode('utf-8')
-        {% else %}{{ field.name }} = struct.unpack("<{{ field.type }}", msg.payload[{{ field.start }}:{{ field.start + field.size }}])[0]{% endif %}{% endfor %} 
+        {% else %}{{ field.name }} = struct.unpack("{{ field.buff_type }}", msg.payload[{{ field.start }}:{{ field.start + field.size }}])[0]{% endif %}{% endfor %} 
         instance = {{ msg.name | capitalize }}Msg({% for field in msg.fields %}{{ field.name }}{% if not loop.last %}, {% endif %}{% endfor %})
         instance.header = msg.header
 
         return instance
 
     def encode(self, src: int, dst: int, next_hop: int) -> LMsg:
-        msg = LMsg({{ msg.size }})
+        msg = LMsg({{ msg.payload_size }})
         msg.header.src = src
         msg.header.dst = dst
         msg.header.next_hop = next_hop
         msg.header.msg_id = {{ msg.id }} 
         {% for field in msg.fields %}
         {% if field.type == 'str' %}msg.payload[{{ field.start }}:{{ field.start + field.size }}] = self.{{ field.name }}.encode('utf-8')
-        {% else %}msg.payload[{{ field.start }}:{{ field.start + field.size }}] = struct.pack("<{{ field.type }}", self.{{ field.name }}){% endif %} {% endfor %}
+        {% else %}msg.payload[{{ field.start }}:{{ field.start + field.size }}] = struct.pack("{{ field.buff_type }}", self.{{ field.name }}){% endif %} {% endfor %}
         msg.calculate_checksum()
 
         return msg
 
 
     def __str__(self) -> str:
-        s = "[{{msg.name | capitalize}}Msg]\n"
+        s = "\n[{{msg.name | capitalize}}Msg]\n"
         s += f"    {self.header}\n\n"
         {% for field in msg.fields %}s += f"    {{ field.name }}: {self.{{field.name}}}\n" 
         {% endfor %}
