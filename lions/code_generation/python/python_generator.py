@@ -44,7 +44,7 @@ class PythonGenerator:
 
         cpp_to_py_bufs = {
             "int8_t": "b",
-            "uint8_t": "c",
+            "uint8_t": "B",
             "int16_t": "<h",
             "uint16_t": "<H",
             "int32_t": "<i",
