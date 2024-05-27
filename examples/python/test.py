@@ -1,4 +1,5 @@
-from generated_code import my_messages_lmsg
-from examples.python.generated_code import ttt as lions
+from generated_code.my_messages_lmsg import *
 
-print(lions.MsgID.accelerometer)
+
+acc = AccelerometerMsg(1, 2, 34.12232)
+print(acc)

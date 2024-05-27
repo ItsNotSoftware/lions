@@ -15,19 +15,19 @@ Generated files should not be manually edited.
 @authored by Lions Compiler
 """
 
-from lions_ import LMsg, Header
+from .lions_ import LMsg, Header
 import struct
 from enum import Enum
 
 class MsgID(Enum):
-    accelerometer = 1,
-    microphone = 2,
+    accelerometer = 1
+    microphone = 2
     ping = 3
 
 
 class MsgPeriod(Enum):
-    accelerometer = 1000,
-    microphone = 0,
+    accelerometer = 1000
+    microphone = 0
     ping = 1000
 
 

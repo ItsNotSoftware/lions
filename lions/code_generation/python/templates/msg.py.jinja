@@ -15,16 +15,16 @@ Generated files should not be manually edited.
 @authored by Lions Compiler
 """
 
-from lions_ import LMsg, Header
+from .lions_ import LMsg, Header
 import struct
 from enum import Enum
 
 class MsgID(Enum):
-{% for msg in msgs %}    {{ msg.name }} = {{ msg.id }}{% if not loop.last %},{% endif %}
+{% for msg in msgs %}    {{ msg.name }} = {{ msg.id }}
 {% endfor %}
 
 class MsgPeriod(Enum):
-{% for msg in msgs %}    {{ msg.name }} = {{ msg.period }}{% if not loop.last %},{% endif %}
+{% for msg in msgs %}    {{ msg.name }} = {{ msg.period }}
 {% endfor %}
 
 {% for msg in msgs %}
