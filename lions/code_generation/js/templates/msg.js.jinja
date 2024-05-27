@@ -34,6 +34,7 @@ class {{msg.name | capitalize}}Msg {
     static fromLMsg(msg) {
         const dataView = new DataView(msg.payload);{% for field in msg.fields %}
         {% if field.type == 'string' %}const {{field.name}} = new TextDecoder().decode(msg.payload.slice({{field.start}}, {{field.start}} + {{field.size}})).replace(/\0.*$/,"");
+        {% elif field.type == 'Int8' or field.type == 'Uint8' %}const {{field.name}} = dataView.get{{field.type | capitalize}}({{field.start}}); 
         {% else %}const {{field.name}} = dataView.get{{field.type | capitalize}}({{field.start}}, true);  // true for little-endian{% endif %}{% endfor %}
 
         return new {{msg.name | capitalize}}Msg({% for field in msg.fields %}{{field.name}}{% if not loop.last %}, {% endif %}{% endfor %});
@@ -57,6 +58,7 @@ class {{msg.name | capitalize}}Msg {
         if (encoded{{field.name | capitalize}}.length < {{field.size}}) {
             dataView.setUint8({{field.start}} + encoded{{field.name | capitalize}}.length, 0);
         }
+        {% elif field.type == 'Int8' or field.type == 'Uint8' %}dataView.set{{field.type | capitalize}}({{field.start}}, this.{{field.name}});
         {% else %}dataView.set{{field.type | capitalize}}({{field.start}}, this.{{field.name}}, true);  // true for little-endian{% endif %}{% endfor %}
 
         msg.calculateChecksum();
