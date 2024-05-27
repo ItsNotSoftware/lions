@@ -17,18 +17,17 @@ Generated files should not be manually edited.
 
 from .lions_ import LMsg, Header
 import struct
-from enum import Enum
 
-class MsgID(Enum):
-    ACCELEROMETER = 1
-    MICROPHONE = 2
-    PING = 3
+# msg ids 
+MSG_ID_ACCELEROMETER = 1
+MSG_ID_MICROPHONE = 2
+MSG_ID_PING = 3
 
 
-class MsgPeriod(Enum):
-    ACCELEROMETER = 1000
-    MICROPHONE = 0
-    PING = 1000
+# msg periods
+MSG_PERIOD_ACCELEROMETER = 1000
+MSG_PERIOD_MICROPHONE = 0
+MSG_PERIOD_PING = 1000
 
 
 

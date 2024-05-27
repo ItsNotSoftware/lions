@@ -17,14 +17,13 @@ Generated files should not be manually edited.
 
 from .lions_ import LMsg, Header
 import struct
-from enum import Enum
 
-class MsgID(Enum):
-{% for msg in msgs %}    {{ msg.name | upper }} = {{ msg.id }}
+# msg ids 
+{% for msg in msgs %}MSG_ID_{{ msg.name | upper }} = {{ msg.id }}
 {% endfor %}
 
-class MsgPeriod(Enum):
-{% for msg in msgs %}    {{ msg.name | upper}} = {{ msg.period }}
+# msg periods
+{% for msg in msgs %}MSG_PERIOD_{{ msg.name | upper}} = {{ msg.period }}
 {% endfor %}
 
 {% for msg in msgs %}

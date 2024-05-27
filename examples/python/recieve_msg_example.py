@@ -89,17 +89,17 @@ def recieve_and_decode_example():
         return
 
     match rcv_msg.header.msg_id:
-        case MsgID.ACCELEROMETER_MSG:
+        case MSG_ID_ACCELEROMETER_MSG:
             acc_msg = AccelerometerMsg.from_lmsg(rcv_msg)
             # Handle the accelerometer message
             print(acc_msg)
 
-        case MsgID.MICROPHONE_MSG:
+        case MSG_ID_MICROPHONE_MSG:
             mic_msg = MicrophoneMsg.from_lmsg(rcv_msg)
             # Handle the microphone message
             print(mic_msg)
 
-        case MsgID.PING_MSG:
+        case MSG_ID_PING_MSG:
             ping_msg = PingMsg.from_lmsg(rcv_msg)
             # Handle the ping message
             print(ping_msg)
