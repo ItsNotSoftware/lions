@@ -32,6 +32,18 @@ class Header {
         this.msg_id = msg_id;
         this.checksum = checksum;
     }
+
+    setChecksum(low: number, high: number): void {
+        this.checksum = (high << 8) | low;
+    }
+
+    get checksum_low(): number {
+        return this.checksum & 0x00FF;
+    }
+
+    get checksum_high(): number {
+        return (this.checksum & 0xFF00) >> 8;
+    }
 }
 
 class LMsg {
@@ -39,7 +51,7 @@ class LMsg {
     payload: ArrayBuffer;
     payload_size: number;
 
-    constructor(payload_size = 0) {
+    constructor(payload_size: number = MAX_PAYLOAD_SIZE) {
         this.header = new Header();
         this.payload = new ArrayBuffer(payload_size);
         this.payload_size = payload_size;
@@ -71,6 +83,7 @@ class LMsg {
         const prev_checksum = this.header.checksum;
         return this.calculateChecksum() === prev_checksum;
     }
+
 }
 
 export { LMsg, MAX_PAYLOAD_SIZE };

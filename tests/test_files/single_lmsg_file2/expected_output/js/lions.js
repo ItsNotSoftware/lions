@@ -26,10 +26,22 @@
         this.msg_id = msg_id;
         this.checksum = checksum;
     }
+
+    setChecksum(low, high) {
+        this.checksum = (high << 8) | low;
+    }
+
+    get checksumLow() {
+        return this.checksum & 0x00ff;
+    }
+
+    get checksumHigh() {
+        return (this.checksum & 0xff00) >> 8;
+    }
 }
 
  class LMsg {
-    constructor(payload_size = 0) {
+    constructor(payload_size = MAX_PAYLOAD_SIZE) {
         this.header = new Header();
         this.payload = new ArrayBuffer(payload_size);
         this.payload_size = payload_size;
