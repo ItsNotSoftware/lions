@@ -20,15 +20,15 @@ import struct
 from enum import Enum
 
 class MsgID(Enum):
-    accelerometer = 1
-    microphone = 2
-    ping = 3
+    ACCELEROMETER = 1
+    MICROPHONE = 2
+    PING = 3
 
 
 class MsgPeriod(Enum):
-    accelerometer = 1000
-    microphone = 0
-    ping = 1000
+    ACCELEROMETER = 1000
+    MICROPHONE = 0
+    PING = 1000
 
 
 

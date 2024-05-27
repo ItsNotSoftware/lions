@@ -20,11 +20,11 @@ import struct
 from enum import Enum
 
 class MsgID(Enum):
-{% for msg in msgs %}    {{ msg.name }} = {{ msg.id }}
+{% for msg in msgs %}    {{ msg.name | upper }} = {{ msg.id }}
 {% endfor %}
 
 class MsgPeriod(Enum):
-{% for msg in msgs %}    {{ msg.name }} = {{ msg.period }}
+{% for msg in msgs %}    {{ msg.name | upper}} = {{ msg.period }}
 {% endfor %}
 
 {% for msg in msgs %}
