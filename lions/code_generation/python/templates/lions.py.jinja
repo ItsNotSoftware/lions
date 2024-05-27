@@ -30,13 +30,24 @@ class Header:
         self.next_hop = 0
         self.msg_id = 0
         self.checksum = 0
-    
+
+    def set_checksum(self, low: int, high: int):
+        self.checksum = (high << 8) | low
+
+    @property
+    def checksum_low(self) -> int:
+        return self.checksum & 0x00FF
+
+    @property
+    def checksum_high(self) -> int:
+        return (self.checksum & 0xFF00) >> 8
+
     def __str__(self) -> str:
         return f"Header(src: {self.src}, dst: {self.dst}, next_hop: {self.next_hop}, msg_id: {self.msg_id}, checksum: {self.checksum})"
 
 
 class LMsg:
-    def __init__(self, payload_size: int):
+    def __init__(self, payload_size: int = MAX_PAYLOAD_SIZE):
         self.header = Header()
         self.payload = bytearray(payload_size)
         self.payload_size = payload_size
@@ -61,11 +72,5 @@ class LMsg:
         prev_checksum = self.header.checksum
         return self.calculate_checksum() == prev_checksum
 
-    @property
-    def checksum_low(self) -> int:
-        return self.header.checksum & 0x00FF
 
-    @property
-    def checksum_high(self) -> int:
-        return (self.header.checksum & 0xFF00) >> 8
 

@@ -11,9 +11,9 @@ const broadcast_id = 255;
 const routing_table = [0, 2, 3, 4, 5, 6, 7, 8, 9, 10];
 
 // ====================================================================================
-// User created functions to send messages depending on app specific msg implementation
+// User created functions to send/recieve messages depending on app specific msg implementation
 //
-// NOTE: this is just an example, you can use any other method to send the messages.
+// NOTE: this is just an example, you can use any other method to recieve the messages.
 
 function recieveByte() {}
 
@@ -25,12 +25,13 @@ function recieveMsg() {
     msg.header.msg_id = recieveByte();
     msg.header.next_hop = recieveByte();
 
-    const checksum_low = recieveByte();
-    const checksum_high = recieveByte();
-    msg.header.checksum = (checksum_high << 8) | checksum_low;
+    // Construct the checksum from the two bytes.
+    const checksumLow = recieveByte();
+    const checksumHigh = recieveByte();
+    msg.header.setChecksum(checksumLow, checksumHigh);
 
-    while (data_available()) {
-        msg.payload[msg.payload_size++] = recieveByte();
+    for (msg.payload_size = 0; dataAvailable(); msg.payload_size++) {
+        msg.payload[msg.payload_size] = recieveByte();
     }
 
     return msg;
@@ -54,8 +55,10 @@ function receiveAndDecodeExample() {
     if (!received_msg.validChecksum()) {
         // Invalid message, do something.
     }
-
-    const to_forward = received_msg.header.next_hop === this_device_id;
+    const to_forward =
+        received_msg.header.next_hop === this_device_id &&
+        received_msg.header.dst !== broadcast_id &&
+        received_msg.header.dst !== this_device_id;
     const is_destination =
         received_msg.header.dst === broadcast_id ||
         received_msg.header.dst === this_device_id;
