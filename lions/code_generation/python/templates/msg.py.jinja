@@ -15,7 +15,7 @@ Generated files should not be manually edited.
 @authored by Lions Compiler
 """
 
-from lions import LMsg, Header
+from lions_ import LMsg, Header
 import struct
 from enum import Enum
 
@@ -28,17 +28,17 @@ class MsgPeriod(Enum):
 {% endfor %}
 
 {% for msg in msgs %}
-class {{ msg.name }}Msg:
+class {{ msg.name | capitalize }}Msg:
     def __init__(self, {% for field in msg.fields %}{{ field.name }}: {{ field.type }}{% if not loop.last %}, {% endif %}{% endfor %}):
         self.header = Header()
         {% for field in msg.fields %}self.{{ field.name }} = {{ field.name }}
         {% endfor %}
     @staticmethod
-    def from_lmsg(msg: LMsg) -> "{{ msg.name }}Msg":
+    def from_lmsg(msg: LMsg) -> "{{ msg.name | capitalize }}Msg":
         {% for field in msg.fields %}
         {% if field.type == 'str' %}{{ field.name }} = msg.payload[{{ field.start }}:{{ field.start + field.size }}].decode('utf-8')
         {% else %}{{ field.name }} = struct.unpack("<{{ field.type }}", msg.payload[{{ field.start }}:{{ field.start + field.size }}])[0]{% endif %}{% endfor %} 
-        instance = {{ msg.name }}Msg({% for field in msg.fields %}{{ field.name }}{% if not loop.last %}, {% endif %}{% endfor %})
+        instance = {{ msg.name | capitalize }}Msg({% for field in msg.fields %}{{ field.name }}{% if not loop.last %}, {% endif %}{% endfor %})
         instance.header = msg.header
 
         return instance
