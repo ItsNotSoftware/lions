@@ -60,10 +60,19 @@ class AccelerometerMsg:
         msg.payload[0:4] = struct.pack("<float", self.acc_x) 
         msg.payload[4:8] = struct.pack("<float", self.acc_y) 
         msg.payload[8:12] = struct.pack("<float", self.acc_z) 
-        
         msg.calculate_checksum()
 
         return msg
+
+
+    def __str__(self) -> str:
+        s = "[AccelerometerMsg]\n"
+        s += f"    {self.header}\n\n"
+        s += f"    acc_x: {self.acc_x}\n" 
+        s += f"    acc_y: {self.acc_y}\n" 
+        s += f"    acc_z: {self.acc_z}\n" 
+        
+        return s
 
 class MicrophoneMsg:
     def __init__(self, sound_level: int, message: str):
@@ -92,10 +101,18 @@ class MicrophoneMsg:
         msg.payload[0:2] = struct.pack("<int", self.sound_level) 
         msg.payload[2:102] = self.message.encode('utf-8')
          
-        
         msg.calculate_checksum()
 
         return msg
+
+
+    def __str__(self) -> str:
+        s = "[MicrophoneMsg]\n"
+        s += f"    {self.header}\n\n"
+        s += f"    sound_level: {self.sound_level}\n" 
+        s += f"    message: {self.message}\n" 
+        
+        return s
 
 class PingMsg:
     def __init__(self, ):
@@ -116,9 +133,15 @@ class PingMsg:
         msg.header.next_hop = next_hop
         msg.header.msg_id = 3 
         
-        
         msg.calculate_checksum()
 
         return msg
+
+
+    def __str__(self) -> str:
+        s = "[PingMsg]\n"
+        s += f"    {self.header}\n\n"
+        
+        return s
 
 

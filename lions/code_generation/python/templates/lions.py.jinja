@@ -30,6 +30,9 @@ class Header:
         self.next_hop = 0
         self.msg_id = 0
         self.checksum = 0
+    
+    def __str__(self) -> str:
+        return f"Header(src: {self.src}, dst: {self.dst}, next_hop: {self.next_hop}, msg_id: {self.msg_id}, checksum: {self.checksum})"
 
 
 class LMsg:
