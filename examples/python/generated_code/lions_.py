@@ -60,3 +60,11 @@ class LMsg:
     def valid_checksum(self) -> bool:
         prev_checksum = self.header.checksum
         return self.calculate_checksum() == prev_checksum
+
+    @property
+    def checksum_low(self) -> int:
+        return self.header.checksum & 0x00FF
+
+    @property
+    def checksum_high(self) -> int:
+        return (self.header.checksum & 0xFF00) >> 8

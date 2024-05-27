@@ -71,6 +71,14 @@ class LMsg {
         const prev_checksum = this.header.checksum;
         return this.calculateChecksum() === prev_checksum;
     }
+
+    get checksum_low(): number {
+        return this.header.checksum & 0x00FF;
+    }
+
+    get checksum_high(): number {
+        return (this.header.checksum & 0xFF00) >> 8;
+    }
 }
 
 export { LMsg, MAX_PAYLOAD_SIZE };

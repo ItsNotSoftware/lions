@@ -60,6 +60,14 @@
         const prev_checksum = this.header.checksum;
         return this.calculateChecksum() === prev_checksum;
     }
+
+    get checksum_low() {
+        return this.header.checksum & 0x00ff;
+    }
+
+    get checksum_high() {
+        return (this.header.checksum & 0xff00) >> 8;
+    }
 }
 
 export { LMsg, MAX_PAYLOAD_SIZE };
