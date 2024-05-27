@@ -1,5 +1,5 @@
 import pytest
-from lions.cpp_gen.cpp_generator import CppGenerator
+from lions.code_generation.cpp.cpp_generator import CppGenerator
 from lions.yaml_parser import YamlParser
 from lions.lmsg import _used_ids, _used_names
 import functools

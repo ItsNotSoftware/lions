@@ -41,7 +41,7 @@ This protocol is ideal for developers looking to implement efficient, data-const
 -   **msg_files_dir**: Directory containing your .lmsg.yaml files
 -   **output_dir**: Directory to place the generated code
 -   **target_language**: Target language for the generated code
-    -   cpp; c; js; ts; py
+    -   cpp / c / js / ts / py
 
 ## Raw Message format
 
@@ -61,6 +61,7 @@ The message structure is composed of a 6-byte header, followed by a variable-len
 -   [C++](https://github.com/ItsNotSoftware/lions/blob/main/examples/c++/generated_code/lions.hpp)
 -   [JavaScript](https://github.com/ItsNotSoftware/lions/blob/main/examples/js/generated_code/lions.js)
 -   [TypeScript](https://github.com/ItsNotSoftware/lions/blob/main/examples/ts/generated_code/lions.ts)
+-   [Python](https://github.com/ItsNotSoftware/lions/blob/main/examples/python/generated_code/lions.py)
 
 ## Defining Messages
 
@@ -158,18 +159,24 @@ For each message type defined in the YAML files, the LIONS compiler generates a 
 
 ---
 
+Generated message classes examples:
+
 -   [C++](https://github.com/ItsNotSoftware/lions/blob/main/examples/c%2B%2B/generated_code/my_messages_lmsg.hpp)
 -   [JavaScript](https://github.com/ItsNotSoftware/lions/blob/main/examples/js/generated_code/my_messages_lmsg.js)
 -   [TypeScript](https://github.com/ItsNotSoftware/lions/blob/main/examples/ts/generated_code/my_messages_lmsg.ts)
+-   [Python](https://github.com/ItsNotSoftware/lions/blob/main/examples/python/generated_code/my_messages_lmsg.py)
 
 ## Examples
 
-[Examples](https://github.com/ItsNotSoftware/lions/tree/main/examples)
+-   [C++](https://github.com/ItsNotSoftware/lions/blob/main/examples)
+-   [JavaScript](https://github.com/ItsNotSoftware/lions/blob/main/examples/js)
+-   [TypeScript](https://github.com/ItsNotSoftware/lions/blob/main/examples/ts)
+-   [Python](https://github.com/ItsNotSoftware/lions/blob/main/examples/python)
 
 ## Target Language Support
 
 -   [x] C++
 -   [x] JavaScript
 -   [x] TypeScript
+-   [x] Python
 -   [ ] C
--   [ ] Python

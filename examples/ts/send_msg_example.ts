@@ -19,15 +19,14 @@ function sendArray(data: ArrayBuffer, size: number) {}
 // Example of a possible function to send a full message.
 function sendMsg(encoded_msg: LMsg) {
     // Send each component of the message header.
-    sendByte(encoded_msg.header.src);       // Source device ID
-    sendByte(encoded_msg.header.dst);       // Destination device ID
-    sendByte(encoded_msg.header.msg_id);    // Message ID
-    sendByte(encoded_msg.header.next_hop);  // Next hop ID
+    sendByte(encoded_msg.header.src); // Source device ID
+    sendByte(encoded_msg.header.dst); // Destination device ID
+    sendByte(encoded_msg.header.msg_id); // Message ID
+    sendByte(encoded_msg.header.next_hop); // Next hop ID
 
-    const checksum_low = encoded_msg.header.checksum & 0x00ff;
-    const checksum_high = (encoded_msg.header.checksum & 0xff00) >> 8;
-    sendByte(checksum_low);
-    sendByte(checksum_high);
+    // Send the checksum in 2 parts (low and high).
+    sendByte(encoded_msg.header.checksum_low);
+    sendByte(encoded_msg.header.checksum_high);
 
     // Send the payload.
     sendArray(encoded_msg.payload, encoded_msg.payload_size);
@@ -48,11 +47,19 @@ function encodeAndSendExample(dst_id: number, next_hop: number) {
 
     // Accelerometer message example: acceleration readings along three axes.
     const accel_msg = new AccelerometerMsg(1.0, 2.0, 3.0);
-    const encoded_accel_msg = accel_msg.encode(this_device_id, dst_id, next_hop);
+    const encoded_accel_msg = accel_msg.encode(
+        this_device_id,
+        dst_id,
+        next_hop
+    );
     sendMsg(encoded_accel_msg);
 
     // Ping message example: a simple broadcast message to inform device availability.
     const ping_msg = new PingMsg();
-    const encoded_ping_msg = ping_msg.encode(this_device_id, broadcast_id, broadcast_id);
+    const encoded_ping_msg = ping_msg.encode(
+        this_device_id,
+        broadcast_id,
+        broadcast_id
+    );
     sendMsg(encoded_ping_msg);
 }

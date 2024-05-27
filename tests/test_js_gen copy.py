@@ -1,5 +1,5 @@
 import pytest
-from lions.js_gen.js_generator import JsGenerator
+from lions.code_generation.js.js_generator import JsGenerator
 from lions.yaml_parser import YamlParser
 from lions.lmsg import _used_ids, _used_names
 import functools

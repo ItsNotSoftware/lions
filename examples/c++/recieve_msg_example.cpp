@@ -6,9 +6,9 @@ constexpr uint8_t broadcast_id = 255;
 uint8_t routing_table[255] = {0};
 
 // ====================================================================================
-// User created functions to send messages depending on the hardware/protocol.
+// User created functions to send/recieve messages depending on the hardware/protocol.
 //
-// NOTE: this is just an example, you can use any other method to send the messages.
+// NOTE: this is just an example, you can use any other method to recieve the messages.
 
 void send_msg(lions::LMsg);
 
