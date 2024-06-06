@@ -22,7 +22,7 @@
 
 ## Description
 
-LIONS is a communication protocol coupled with a compiler, specifically designed for low-bandwidth IoT mesh and ad hoc networks. Originally tailored for LoRa, LIONS is versatile enough to be adapted to various communication standards, thanks to its protocol-agnostic message encoding approach.
+LIONS is a communication protocol coupled with a compiler (lionsc), specifically designed for low-bandwidth IoT mesh and ad hoc networks. Originally tailored for LoRa, LIONS is versatile enough to be adapted to various communication standards, thanks to its protocol-agnostic message encoding approach.
 
 The core of LIONS lies in its efficient message encoding system. Messages are compactly encoded into byte arrays, ensuring that each value occupies only the necessary space required by its type, thus minimizing space.
 
@@ -32,11 +32,11 @@ This protocol is ideal for developers looking to implement efficient, data-const
 
 ## Install
 
-    $ pip install lions
+    $ pip install lionsc
 
 ## Usage
 
-    $ lions <msg_files_dir> <output_dir> <target_language>
+    $ lionsc <msg_files_dir> <output_dir> <target_language>
 
 -   **msg_files_dir**: Directory containing your .lmsg.yaml files
 -   **output_dir**: Directory to place the generated code

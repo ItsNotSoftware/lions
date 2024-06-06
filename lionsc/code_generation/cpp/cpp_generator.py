@@ -1,5 +1,5 @@
 from jinja2 import Environment, FileSystemLoader
-from lions.lmsg import LMsg
+from lionsc.lmsg import LMsg
 import time
 from colorama import Fore, Style
 import os

@@ -1,7 +1,7 @@
 import pytest
-from lions.code_generation.cpp.cpp_generator import CppGenerator
-from lions.yaml_parser import YamlParser
-from lions.lmsg import _used_ids, _used_names
+from lionsc.code_generation.cpp.cpp_generator import CppGenerator
+from lionsc.yaml_parser import YamlParser
+from lionsc.lmsg import _used_ids, _used_names
 import functools
 import os
 

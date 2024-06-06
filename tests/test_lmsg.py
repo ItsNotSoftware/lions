@@ -1,6 +1,6 @@
 import pytest
-from lions.lmsg import LMsg, MsgField, _used_ids, _used_names
-from lions.errors import *
+from lionsc.lmsg import LMsg, MsgField, _used_ids, _used_names
+from lionsc.errors import *
 
 
 def reset(func):

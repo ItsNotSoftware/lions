@@ -15,13 +15,13 @@ License:
 
 import sys
 import colorama
-from lions.code_generation.cpp.cpp_generator import CppGenerator
-from lions.code_generation.js.js_generator import JsGenerator
-from lions.code_generation.ts.ts_generator import TsGenerator
-from lions.code_generation.python.python_generator import PythonGenerator
-from lions.yaml_parser import YamlParser
+from lionsc.code_generation.cpp.cpp_generator import CppGenerator
+from lionsc.code_generation.js.js_generator import JsGenerator
+from lionsc.code_generation.ts.ts_generator import TsGenerator
+from lionsc.code_generation.python.python_generator import PythonGenerator
+from lionsc.yaml_parser import YamlParser
 from colorama import Fore, Style
-from lions.errors import InvalidTargetLanguageError
+from lionsc.errors import InvalidTargetLanguageError
 
 
 def invalid_language(_):

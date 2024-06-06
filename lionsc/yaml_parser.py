@@ -13,9 +13,9 @@ License:
 
 import yaml
 
-from lions.lmsg import LMsg, MsgField
+from lionsc.lmsg import LMsg, MsgField
 from typing import Generator
-from lions.errors import *
+from lionsc.errors import *
 import os
 
 from colorama import Fore, Style

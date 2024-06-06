@@ -1,8 +1,8 @@
 import pytest
 
-from lions.yaml_parser import YamlParser
-from lions.lmsg import LMsg, MsgField, _used_ids, _used_names
-from lions.errors import *
+from lionsc.yaml_parser import YamlParser
+from lionsc.lmsg import LMsg, MsgField, _used_ids, _used_names
+from lionsc.errors import *
 
 
 def reset(func):
