@@ -1,0 +1,22 @@
+LICENSE
+README.md
+setup.cfg
+setup.py
+lionsc/__init__.py
+lionsc/errors.py
+lionsc/lmsg.py
+lionsc/main.py
+lionsc/yaml_parser.py
+lionsc.egg-info/PKG-INFO
+lionsc.egg-info/SOURCES.txt
+lionsc.egg-info/dependency_links.txt
+lionsc.egg-info/entry_points.txt
+lionsc.egg-info/requires.txt
+lionsc.egg-info/top_level.txt
+tests/__init__.py
+tests/test_cpp_gen.py
+tests/test_js_gen copy.py
+tests/test_lmsg.py
+tests/test_python_gen.py
+tests/test_ts_gen.py
+tests/test_yaml_parser.py

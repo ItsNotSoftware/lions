@@ -44,7 +44,7 @@ def test_python_gen():
         generator.generate_msg_files(filename, msgs)
 
     expected_files = [
-        "lions_.py",
+        "lions.py",
         "multiple_lmsg.py",
     ]
 

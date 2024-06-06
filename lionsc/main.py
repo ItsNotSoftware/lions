@@ -61,7 +61,7 @@ def main():
 
     # Check if the number of arguments is correct
     if len(sys.argv) != 4:
-        print("Usage: lions <msg_files_dir> <output_dir> <target_language>")
+        print("Usage: lionsc <msg_files_dir> <output_dir> <target_language>")
 
         # targert language help
         print(

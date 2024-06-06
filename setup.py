@@ -27,7 +27,7 @@ setup(
     include_package_data=True,
     entry_points={
         "console_scripts": [
-            "lions = lions.main:main",
+            "lionsc = lionsc.main:main",
         ],
     },
 )

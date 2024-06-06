@@ -82,9 +82,9 @@ class PythonGenerator:
     def generate_lions_py(self):
         """Generate the lions.py file"""
 
-        with open(f"{self.output_dir}/lions_.py", "w") as f:
+        with open(f"{self.output_dir}/lions.py", "w") as f:
             f.write(self.module_py_template.render())
-            print_generation_status(self.output_dir, "lions_.py")
+            print_generation_status(self.output_dir, "lions.py")
 
     def generate_msg_files(self, filename: str, msgs: list[LMsg]):
         """
