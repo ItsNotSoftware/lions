@@ -86,4 +86,4 @@ class LMsg {
 
 }
 
-export { LMsg, MAX_PAYLOAD_SIZE };
+export { LMsg, Header, MAX_PAYLOAD_SIZE };
