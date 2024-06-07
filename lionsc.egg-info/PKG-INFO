@@ -1,6 +1,6 @@
 Metadata-Version: 2.1
 Name: lionsc
-Version: 2.0
+Version: 2.0.1
 Summary: LIONS is a communication protocol coupled with a compiler (lionsc), specifically designed for low-bandwidth IoT mesh and ad hoc networks.
 Home-page: https://github.com/ItsNotSoftware/lions
 Author: Diogo Ferreira

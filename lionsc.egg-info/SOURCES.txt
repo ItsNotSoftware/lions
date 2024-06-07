@@ -13,6 +13,15 @@ lionsc.egg-info/dependency_links.txt
 lionsc.egg-info/entry_points.txt
 lionsc.egg-info/requires.txt
 lionsc.egg-info/top_level.txt
+lionsc/code_generation/__init__.py
+lionsc/code_generation/cpp/__init__.py
+lionsc/code_generation/cpp/cpp_generator.py
+lionsc/code_generation/js/__init__.py
+lionsc/code_generation/js/js_generator.py
+lionsc/code_generation/python/__init__.py
+lionsc/code_generation/python/python_generator.py
+lionsc/code_generation/ts/__init__.py
+lionsc/code_generation/ts/ts_generator.py
 tests/__init__.py
 tests/test_cpp_gen.py
 tests/test_js_gen copy.py
