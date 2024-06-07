@@ -1,8 +1,0 @@
-pydantic
-pyyaml
-jinja2
-pytest
-colorama
-
-[dev]
-twine>=4.0.2
