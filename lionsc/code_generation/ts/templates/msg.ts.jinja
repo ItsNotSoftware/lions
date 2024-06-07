@@ -15,7 +15,7 @@
  * @author Lions Compiler
 */
 
-import { LMsg } from './lions.ts';
+import { LMsg, Header } from './lions.ts';
 
 const msg_id = {
 {% for msg in msgs %}    {{msg.name}}: {{msg.id}}{% if not loop.last %},{% endif %}
@@ -27,13 +27,16 @@ const msg_period = {
 
 {% for msg in msgs %}
 class {{msg.name | capitalize}}Msg {
+    header: Header:
 {% for field in msg.fields %}    {{field.name}}: {{field.type}};
 {% endfor %}
     constructor({% for field in msg.fields %}{{field.name}}: {{field.type}}{% if not loop.last %}, {% endif %}{% endfor %}) {
+        header = new Header();
 {% for field in msg.fields %}        this.{{field.name}} = {{field.name}};
 {% endfor %}    }
 
     static fromLMsg(msg: LMsg): {{msg.name | capitalize}}Msg {
+        header = msg.header;
         const dataView = new DataView(msg.payload);{% for field in msg.fields %}
         {% if field.buff_type == 'string' %}const {{field.name}} = new TextDecoder().decode(msg.payload.slice({{field.start}}, {{field.start}} + {{field.size}})).replace(/\0.*$/,"");
         {% elif field.buff_type == 'Int8' or field.buff_type == 'Uint8'  %}const {{field.name}} = dataView.get{{field.buff_type | capitalize}}({{field.start}});
