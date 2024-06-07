@@ -26,7 +26,7 @@ bin/
 *~
 
 test/output/*
-lions.egg-info/
+lionsc.egg-info/
 output/
 tests/output/*
 upload.sh
