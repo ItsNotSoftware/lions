@@ -12,7 +12,7 @@ License:
 """
 
 from pydantic import BaseModel, field_validator, model_validator
-from lions.errors import *
+from lionsc.errors import *
 
 _used_ids = []  # List to store the used IDs
 _used_names = []  # List to store the used names

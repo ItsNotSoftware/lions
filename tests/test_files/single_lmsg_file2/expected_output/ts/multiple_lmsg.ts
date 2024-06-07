@@ -15,7 +15,7 @@
  * @author Lions Compiler
 */
 
-import { LMsg } from './lions.ts';
+import { LMsg, Header } from './lions.ts';
 
 const msg_id = {
     accelerometer: 1,
@@ -31,11 +31,13 @@ const msg_period = {
 
 
 class AccelerometerMsg {
+    header: Header;
     acc_x: number;
     acc_y: number;
     acc_z: number;
 
     constructor(acc_x: number, acc_y: number, acc_z: number) {
+        this.header = new Header();
         this.acc_x = acc_x;
         this.acc_y = acc_y;
         this.acc_z = acc_z;
@@ -47,7 +49,10 @@ class AccelerometerMsg {
         const acc_y = dataView.getFloat32(4, true);  // true for little-endian
         const acc_z = dataView.getFloat32(8, true);  // true for little-endian
 
-        return new AccelerometerMsg(acc_x, acc_y, acc_z);
+        let instance = new AccelerometerMsg(acc_x, acc_y, acc_z);
+        instance.header = msg.header;
+
+        return instance;
     }
 
     encode(src: number, dst: number, next_hop: number): LMsg {
@@ -70,10 +75,12 @@ class AccelerometerMsg {
 }
 
 class MicrophoneMsg {
+    header: Header;
     sound_level: number;
     message: string;
 
     constructor(sound_level: number, message: string) {
+        this.header = new Header();
         this.sound_level = sound_level;
         this.message = message;
     }
@@ -84,7 +91,10 @@ class MicrophoneMsg {
         const message = new TextDecoder().decode(msg.payload.slice(2, 2 + 100)).replace(/\0.*$/,"");
         
 
-        return new MicrophoneMsg(sound_level, message);
+        let instance = new MicrophoneMsg(sound_level, message);
+        instance.header = msg.header;
+
+        return instance;
     }
 
     encode(src: number, dst: number, next_hop: number): LMsg {
@@ -115,14 +125,19 @@ class MicrophoneMsg {
 }
 
 class PingMsg {
+    header: Header;
 
     constructor() {
+        this.header = new Header();
     }
 
     static fromLMsg(msg: LMsg): PingMsg {
         const dataView = new DataView(msg.payload);
 
-        return new PingMsg();
+        let instance = new PingMsg();
+        instance.header = msg.header;
+
+        return instance;
     }
 
     encode(src: number, dst: number, next_hop: number): LMsg {

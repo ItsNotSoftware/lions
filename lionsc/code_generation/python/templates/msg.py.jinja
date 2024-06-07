@@ -15,7 +15,7 @@ Generated files should not be manually edited.
 @authored by Lions Compiler
 """
 
-from .lions_ import LMsg, Header
+from .lions import LMsg, Header
 import struct
 
 # msg ids 

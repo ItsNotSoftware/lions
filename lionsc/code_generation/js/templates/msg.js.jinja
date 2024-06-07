@@ -28,6 +28,7 @@ const msg_period = {
 {% for msg in msgs %}
 class {{msg.name | capitalize}}Msg {
     constructor({% for field in msg.fields %}{{field.name}}{% if not loop.last %}, {% endif %}{% endfor %}) {
+        this.header = new Header();
 {% for field in msg.fields %}        this.{{field.name}} = {{field.name}};
 {% endfor %}    }
 
@@ -37,7 +38,10 @@ class {{msg.name | capitalize}}Msg {
         {% elif field.type == 'Int8' or field.type == 'Uint8' %}const {{field.name}} = dataView.get{{field.type | capitalize}}({{field.start}}); 
         {% else %}const {{field.name}} = dataView.get{{field.type | capitalize}}({{field.start}}, true);  // true for little-endian{% endif %}{% endfor %}
 
-        return new {{msg.name | capitalize}}Msg({% for field in msg.fields %}{{field.name}}{% if not loop.last %}, {% endif %}{% endfor %});
+        let instance = new {{msg.name | capitalize}}Msg({% for field in msg.fields %}{{field.name}}{% if not loop.last %}, {% endif %}{% endfor %});
+        instance.header = msg.header;
+        
+        return instance;
     }
 
     encode(src, dst, next_hop) {

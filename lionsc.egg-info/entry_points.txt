@@ -1,0 +1,2 @@
+[console_scripts]
+lionsc = lionsc.main:main

@@ -1,3 +1,24 @@
+Metadata-Version: 2.1
+Name: lionsc
+Version: 2.0.1
+Summary: LIONS is a communication protocol coupled with a compiler (lionsc), specifically designed for low-bandwidth IoT mesh and ad hoc networks.
+Home-page: https://github.com/ItsNotSoftware/lions
+Author: Diogo Ferreira
+Author-email: itsnotsoftware@gmail.com
+License: MIT
+Classifier: Programming Language :: Python :: 3
+Classifier: License :: OSI Approved :: MIT License
+Classifier: Operating System :: OS Independent
+Description-Content-Type: text/markdown
+License-File: LICENSE
+Requires-Dist: pydantic
+Requires-Dist: pyyaml
+Requires-Dist: jinja2
+Requires-Dist: pytest
+Requires-Dist: colorama
+Provides-Extra: dev
+Requires-Dist: twine>=4.0.2; extra == "dev"
+
 # LIONS (Lightweight IoT Network Specification)
 
 ## Index

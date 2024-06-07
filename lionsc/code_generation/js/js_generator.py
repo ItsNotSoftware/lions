@@ -1,5 +1,5 @@
 from jinja2 import Environment, FileSystemLoader
-from lions.lmsg import LMsg
+from lionsc.lmsg import LMsg
 import time
 from colorama import Fore, Style
 import os
@@ -10,10 +10,10 @@ def print_generation_status(output_dir, file_name):
     print(f"{timestamp} - Successfully generated: {output_dir}/{file_name}")
 
 
-class TsGenerator:
+class JsGenerator:
     def __init__(self, output_dir: str):
         """
-        Constructor for the TsGenerator class
+        Constructor for the JsGenerator class
 
         Args:
             output_dir (str): The output directory where the generated files will be saved
@@ -25,15 +25,15 @@ class TsGenerator:
         self.env = Environment(loader=FileSystemLoader(template_dir))
 
         # Load the templates
-        self.module_ts_template = self.env.get_template("lions.ts.jinja")
-        self.class_ts_template = self.env.get_template("msg.ts.jinja")
+        self.module_js_template = self.env.get_template("lions.js.jinja")
+        self.class_js_template = self.env.get_template("msg.js.jinja")
 
-        self.generate_lions_ts()
+        self.generate_lions_js()
 
     @staticmethod
-    def convert_to_ts_types(lmsgs: list[LMsg]) -> list[LMsg]:
+    def convert_to_js_types(lmsgs: list[LMsg]) -> list[LMsg]:
         """
-        Convert the message types to TypeScript types
+        Convert the message types to JavaScript types
 
         Args:
             lmsgs (list[LMsg]): The list of messages to convert
@@ -42,7 +42,7 @@ class TsGenerator:
             list[LMsg]: The list of messages with converted types
         """
 
-        cpp_to_ts_bufs = {
+        cpp_to_js_types = {
             "int8_t": "Int8",
             "uint8_t": "Uint8",
             "int16_t": "Int16",
@@ -57,49 +57,33 @@ class TsGenerator:
             "bool": "boolean",
         }
 
-        cpp_to_ts_types = {
-            "int8_t": "number",
-            "uint8_t": "number",
-            "int16_t": "number",
-            "uint16_t": "number",
-            "int32_t": "number",
-            "uint32_t": "number",
-            "int64_t": "bigint",
-            "uint64_t": "bigint",
-            "float": "number",
-            "double": "number",
-            "string": "string",
-            "bool": "boolean",
-        }
-
         for msg in lmsgs:
             for field in msg.fields:
-                field.buff_type = cpp_to_ts_bufs[field.type]
-                field.type = cpp_to_ts_types[field.type]
+                field.type = cpp_to_js_types[field.type]
 
         return lmsgs
 
-    def generate_lions_ts(self):
-        """Generate the lions.ts file"""
+    def generate_lions_js(self):
+        """Generate the lions.js file"""
 
-        with open(f"{self.output_dir}/lions.ts", "w") as f:
-            f.write(self.module_ts_template.render())
-            print_generation_status(self.output_dir, "lions.ts")
+        with open(f"{self.output_dir}/lions.js", "w") as f:
+            f.write(self.module_js_template.render())
+            print_generation_status(self.output_dir, "lions.js")
 
     def generate_msg_files(self, filename: str, msgs: list[LMsg]):
         """
-        Generate the .ts message files for the given message file (yaml)
+        Generate the .js message files for the given message file (yaml)
 
         Args:
             filename (str): The filename of the message files
             msgs (list[LMsg]): The list of messages to generate
         """
-        msgs = self.convert_to_ts_types(msgs)
+        msgs = self.convert_to_js_types(msgs)
 
         # Dictionary to pass to the jinja templates
         jinja_dict = {"filename": filename, "msgs": msgs}
 
         file = f"{self.output_dir}/{filename}"
-        with open(f"{file}_lmsg.ts", "w") as f:
-            f.write(self.class_ts_template.render(jinja_dict))
-            print_generation_status(self.output_dir, f"{filename}.ts")
+        with open(f"{file}_lmsg.js", "w") as f:
+            f.write(self.class_js_template.render(jinja_dict))
+            print_generation_status(self.output_dir, f"{filename}.js")

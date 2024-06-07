@@ -1,7 +1,7 @@
 import pytest
-from lions.code_generation.python.python_generator import PythonGenerator
-from lions.yaml_parser import YamlParser
-from lions.lmsg import _used_ids, _used_names
+from lionsc.code_generation.python.python_generator import PythonGenerator
+from lionsc.yaml_parser import YamlParser
+from lionsc.lmsg import _used_ids, _used_names
 import functools
 import os
 
@@ -44,7 +44,7 @@ def test_python_gen():
         generator.generate_msg_files(filename, msgs)
 
     expected_files = [
-        "lions_.py",
+        "lions.py",
         "multiple_lmsg.py",
     ]
 
