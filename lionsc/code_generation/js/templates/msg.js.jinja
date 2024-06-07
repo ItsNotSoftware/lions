@@ -27,11 +27,13 @@ const msg_period = {
 
 {% for msg in msgs %}
 class {{msg.name | capitalize}}Msg {
+    header = new Header();
     constructor({% for field in msg.fields %}{{field.name}}{% if not loop.last %}, {% endif %}{% endfor %}) {
 {% for field in msg.fields %}        this.{{field.name}} = {{field.name}};
 {% endfor %}    }
 
     static fromLMsg(msg) {
+        header = msg.header;
         const dataView = new DataView(msg.payload);{% for field in msg.fields %}
         {% if field.type == 'string' %}const {{field.name}} = new TextDecoder().decode(msg.payload.slice({{field.start}}, {{field.start}} + {{field.size}})).replace(/\0.*$/,"");
         {% elif field.type == 'Int8' or field.type == 'Uint8' %}const {{field.name}} = dataView.get{{field.type | capitalize}}({{field.start}}); 
