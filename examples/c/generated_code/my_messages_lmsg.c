@@ -1,3 +1,4 @@
+
 /**
  * @file my_messages_lmsg.c
  *
@@ -20,12 +21,14 @@
 #include "my_messages_lmsg.h"
 #include <string.h>
 
-AccelerometerMsg AccelerometerMsg_create(float acc_x, float acc_y,
-                                         float acc_z) {
+
+AccelerometerMsg AccelerometerMsg_create(float acc_x, float acc_y, float acc_z) {
     AccelerometerMsg msg = {0};
-    msg.acc_x = acc_x;
-    msg.acc_y = acc_y;
-    msg.acc_z = acc_z;
+     
+    msg.acc_x = acc_x;   
+    msg.acc_y = acc_y;   
+    msg.acc_z = acc_z;  
+
     return msg;
 }
 
@@ -33,34 +36,34 @@ AccelerometerMsg AccelerometerMsg_decode(const LMsg *lmsg) {
     AccelerometerMsg msg = {0};
 
     msg.header = lmsg->header;
-    memcpy(&msg.acc_x, &lmsg->payload[0], sizeof(float));
-    memcpy(&msg.acc_y, &lmsg->payload[4], sizeof(float));
-    memcpy(&msg.acc_z, &lmsg->payload[8], sizeof(float));
-
+    memcpy(&msg.acc_x, &lmsg->payload[0], sizeof(float)); memcpy(&msg.acc_y, &lmsg->payload[4], sizeof(float)); memcpy(&msg.acc_z, &lmsg->payload[8], sizeof(float)); 
     return msg;
 }
 
-LMsg AccelerometerMsg_encode(const AccelerometerMsg *msg, uint8_t src,
-                             uint8_t dst, uint8_t next_hop) {
+LMsg AccelerometerMsg_encode(const AccelerometerMsg *msg, uint8_t src, uint8_t dst, uint8_t next_hop) {
     LMsg lmsg = {0};
+
     lmsg.payload_size = 12;
     lmsg.header.src = src;
     lmsg.header.dst = dst;
     lmsg.header.next_hop = next_hop;
     lmsg.header.msg_id = MSG_ID_ACCELEROMETER;
-
-    memcpy(&lmsg.payload[0], &msg->acc_x, sizeof(float));
-    memcpy(&lmsg.payload[4], &msg->acc_y, sizeof(float));
-    memcpy(&lmsg.payload[8], &msg->acc_z, sizeof(float));
+     
+    memcpy(&lmsg.payload[0], &msg->acc_x, sizeof(float));   
+    memcpy(&lmsg.payload[4], &msg->acc_y, sizeof(float));   
+    memcpy(&lmsg.payload[8], &msg->acc_z, sizeof(float));  
     LMsg_calculate_checksum(&lmsg);
 
     return lmsg;
 }
 
-MicrophoneMsg MicrophoneMsg_create(int16_t sound_level, const char *message) {
+MicrophoneMsg MicrophoneMsg_create(int16_t sound_level, char* message) {
     MicrophoneMsg msg = {0};
-    msg.sound_level = sound_level;
-    strncpy(msg.message, message, 100);
+     
+    msg.sound_level = sound_level;   
+    strncpy(msg.message, message, sizeof(msg.message) - 1);
+    msg.message[sizeof(msg.message) - 1] = '\0'; // ensure null termination  
+
     return msg;
 }
 
@@ -68,24 +71,25 @@ MicrophoneMsg MicrophoneMsg_decode(const LMsg *lmsg) {
     MicrophoneMsg msg = {0};
 
     msg.header = lmsg->header;
-    memcpy(&msg.sound_level, &lmsg->payload[0], sizeof(int16_t));
-    strncpy(msg.message, (char *)&lmsg->payload[2], 100);
-
+    memcpy(&msg.sound_level, &lmsg->payload[0], sizeof(int16_t)); 
+    strncpy(msg.message, (char*)&lmsg->payload[2], sizeof(msg.message) - 1);
+    msg.message[sizeof(msg.message) - 1] = '\0'; // ensure null termination
+     
     return msg;
 }
 
-LMsg MicrophoneMsg_encode(const MicrophoneMsg *msg, uint8_t src, uint8_t dst,
-                          uint8_t next_hop) {
+LMsg MicrophoneMsg_encode(const MicrophoneMsg *msg, uint8_t src, uint8_t dst, uint8_t next_hop) {
     LMsg lmsg = {0};
+
     lmsg.payload_size = 102;
     lmsg.header.src = src;
     lmsg.header.dst = dst;
     lmsg.header.next_hop = next_hop;
     lmsg.header.msg_id = MSG_ID_MICROPHONE;
-
-    memcpy(&lmsg.payload[0], &msg->sound_level, sizeof(int16_t));
-    strncpy((char *)&lmsg.payload[2], msg->message, 100);
-    lmsg.payload[2 + strlen(msg->message)] = '\0'; // terminate string
+     
+    memcpy(&lmsg.payload[0], &msg->sound_level, sizeof(int16_t));    strncpy((char*)&lmsg->payload[2], msg->message, sizeof(msg->message) - 1);
+    lmsg.payload[2 + sizeof(msg->message) - 1] = '\0'; // ensure null termination
+     
     LMsg_calculate_checksum(&lmsg);
 
     return lmsg;
@@ -93,24 +97,28 @@ LMsg MicrophoneMsg_encode(const MicrophoneMsg *msg, uint8_t src, uint8_t dst,
 
 PingMsg PingMsg_create() {
     PingMsg msg = {0};
+    
+
     return msg;
 }
 
 PingMsg PingMsg_decode(const LMsg *lmsg) {
     PingMsg msg = {0};
+
     msg.header = lmsg->header;
+    
     return msg;
 }
 
-LMsg PingMsg_encode(const PingMsg *msg, uint8_t src, uint8_t dst,
-                    uint8_t next_hop) {
+LMsg PingMsg_encode(const PingMsg *msg, uint8_t src, uint8_t dst, uint8_t next_hop) {
     LMsg lmsg = {0};
+
     lmsg.payload_size = 0;
     lmsg.header.src = src;
     lmsg.header.dst = dst;
     lmsg.header.next_hop = next_hop;
     lmsg.header.msg_id = MSG_ID_PING;
-
+    
     LMsg_calculate_checksum(&lmsg);
 
     return lmsg;

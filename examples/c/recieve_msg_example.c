@@ -1,8 +1,9 @@
-#include "generated_code/my_messages_lmsg.hpp" // Include the generated messages.
+#include "generated_code/lions.h"
+#include "generated_code/my_messages_lmsg.h" // Include the generated messages.
 
 // Define a constant for the device identifier used in the message.
-constexpr uint8_t this_device_id = 1;
-constexpr uint8_t broadcast_id = 255;
+#define THIS_DEV_ID 1
+#define BROADCAST_ID 255
 uint8_t routing_table[255] = {0};
 
 // ====================================================================================
@@ -12,12 +13,12 @@ uint8_t routing_table[255] = {0};
 // NOTE: this is just an example, you can use any other method to recieve the
 // messages.
 
-void send_msg(lions::LMsg);
+void send_msg(LMsg);
 
 uint8_t recieve_byte();
 
-lions::LMsg Receive_msg() {
-    lions::LMsg msg(0);
+LMsg Receive_msg() {
+    LMsg msg = {0};
     msg.header.src = recieve_byte();
     msg.header.dst = recieve_byte();
     msg.header.msg_id = recieve_byte();
@@ -43,16 +44,17 @@ lions::LMsg Receive_msg() {
  * message object.
  */
 void receive_and_decode_example() {
-    auto received_msg = Receive_msg();
+    LMsg received_msg = Receive_msg();
 
     // Check if the message has a valid checksum.
-    if (!received_msg.valid_checksum()) {
+    if (!LMsg_valid_checksum(&received_msg)) {
+
         // Invalid message, do something.
     }
 
-    bool to_forward = received_msg.header.next_hop == this_device_id;
+    bool to_forward = received_msg.header.next_hop == THIS_DEV_ID;
     bool is_destination = received_msg.header.dst =
-        broadcast_id || received_msg.header.dst == this_device_id;
+        BROADCAST_ID || received_msg.header.dst == THIS_DEV_ID;
 
     if (to_forward) {
         received_msg.header.next_hop =
@@ -67,23 +69,24 @@ void receive_and_decode_example() {
         return; // Ignore message if not for this device.
 
     switch (received_msg.header.msg_id) {
-    case lions::msg_id::ACCELEROMETER: {
-        const lions::AccelerometerMsg accel_msg(received_msg);
+
+    case MSG_ID_ACCELEROMETER: {
+        const AccelerometerMsg acc_msg = AccelerometerMsg_decode(&received_msg);
         // Do something with the accelerometer message.
     } break;
 
-    case lions::msg_id::MICROPHONE: {
-        const lions::MicrophoneMsg mic_msg(received_msg);
+    case MSG_ID_MICROPHONE: {
+        const MicrophoneMsg mic_msg = MicrophoneMsg_decode(&received_msg);
         // Do something with the microphone message.
     } break;
 
-    case lions::msg_id::PING: {
-        const lions::PingMsg ping_msg(received_msg);
+    case MSG_ID_PING: {
+        const PingMsg ping_msg = PingMsg_decode(&received_msg);
         // Do something with the ping message.
     } break;
 
     default:
-        // Do something with the message.
+        // Unknown message, do something.
         break;
     }
 }
