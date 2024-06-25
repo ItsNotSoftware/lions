@@ -15,6 +15,7 @@ License:
 
 import sys
 import colorama
+from lionsc.code_generation.c.c_generator import CGenerator
 from lionsc.code_generation.cpp.cpp_generator import CppGenerator
 from lionsc.code_generation.js.js_generator import JsGenerator
 from lionsc.code_generation.ts.ts_generator import TsGenerator
@@ -67,6 +68,7 @@ def main():
         print(
             """
     Target Language:
+        c - C
         cpp - C++
         js - JavaScript
         ts - TypeScript
@@ -86,13 +88,14 @@ def main():
 
     # Initialize the code generator based on the target language
     code_generator = {
+        "c": CGenerator,
         "cpp": CppGenerator,
         "js": JsGenerator,
         "ts": TsGenerator,
         "py": PythonGenerator,
     }.get(sys.argv[3], invalid_language)(output_dir)
 
-    # Parse the message files and generate the corresponding C++ files
+    # Parse the message files and generate the corresponding files
     for filename, msgs in parser.parse_file():
         code_generator.generate_msg_files(filename, msgs)
 

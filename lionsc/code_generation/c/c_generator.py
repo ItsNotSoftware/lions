@@ -64,7 +64,7 @@ class CGenerator:
         for msg in msgs:
             for field in msg.fields:
                 if field.type == "string":
-                    field.type = "char *"
+                    field.type = "char*"
 
         with open(f"{file}_lmsg.h", "w") as f_h, open(f"{file}_lmsg.c", "w") as f_c:
             # h

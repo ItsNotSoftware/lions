@@ -5,7 +5,7 @@ with open("README.md", "r") as f:
 
 setup(
     name="lionsc",
-    version="2.0.4",
+    version="2.1.0",
     author="Diogo Ferreira",
     author_email="itsnotsoftware@gmail.com",
     description="LIONS is a communication protocol coupled with a compiler (lionsc), specifically designed for low-bandwidth IoT mesh and ad hoc networks.",

@@ -43,6 +43,7 @@ typedef struct {
 } {{ msg.name | capitalize }}Msg;
 {% endfor %}
 
+{% for msg in msgs %}
 {{ msg.name | capitalize }}Msg {{ msg.name | capitalize }}Msg_create({% for field in msg.fields %}{{ field.type }} {{ field.name }}{% if not loop.last %}, {% endif %}{% endfor %});
 {{ msg.name | capitalize }}Msg {{ msg.name | capitalize }}Msg_decode(const LMsg *lmsg);
 LMsg {{ msg.name | capitalize }}Msg_encode(const {{ msg.name | capitalize }}Msg *msg, uint8_t src, uint8_t dst, uint8_t next_hop);

@@ -24,14 +24,11 @@
 {% for msg in msgs %}
 {{ msg.name | capitalize }}Msg {{ msg.name | capitalize }}Msg_create({% for field in msg.fields %}{{ field.type }} {{ field.name }}{% if not loop.last %}, {% endif %}{% endfor %}) {
     {{ msg.name | capitalize }}Msg msg = {0};
-    {% for field in msg.fields %}
-    {% if field.type == 'char *' %}
+    {% for field in msg.fields %} {% if field.type == 'char*' %}
     strncpy(msg.{{ field.name }}, {{ field.name }}, sizeof(msg.{{ field.name }}) - 1);
-    msg.{{ field.name }}[sizeof(msg.{{ field.name }}) - 1] = '\0'; // ensure null termination
-    {% else %}
-    msg.{{ field.name }} = {{ field.name }};
-    {% endif %}
-    {% endfor %}
+    msg.{{ field.name }}[sizeof(msg.{{ field.name }}) - 1] = '\0'; // ensure null termination {% else %}
+    msg.{{ field.name }} = {{ field.name }}; {% endif %} {% endfor %}
+
     return msg;
 }
 
@@ -39,27 +36,27 @@
     {{ msg.name | capitalize }}Msg msg = {0};
 
     msg.header = lmsg->header;
-    {% for field in msg.fields %}
-    {% if field.type == 'char *' %}
-    strncpy(msg.{{ field.name }}, (char *)&lmsg->payload[{{ field.start }}], sizeof(msg.{{ field.name }}) - 1);
+    {% for field in msg.fields %}{% if field.type == 'char*' %}
+    strncpy(msg.{{ field.name }}, (char*)&lmsg->payload[{{ field.start }}], sizeof(msg.{{ field.name }}) - 1);
     msg.{{ field.name }}[sizeof(msg.{{ field.name }}) - 1] = '\0'; // ensure null termination
-    {% else %}
-    memcpy(&msg.{{ field.name }}, &lmsg->payload[{{ field.start }}], sizeof({{ field.type }}));
-    {% endif %}
-    {% endfor %}
-
+    {% else %}memcpy(&msg.{{ field.name }}, &lmsg->payload[{{ field.start }}], sizeof({{ field.type }}));{% endif %} {% endfor %}
     return msg;
 }
 
 LMsg {{ msg.name | capitalize }}Msg_encode(const {{ msg.name | capitalize }}Msg *msg, uint8_t src, uint8_t dst, uint8_t next_hop) {
     LMsg lmsg = {0};
+
     lmsg.payload_size = {{ msg.payload_size }};
     lmsg.header.src = src;
     lmsg.header.dst = dst;
     lmsg.header.next_hop = next_hop;
     lmsg.header.msg_id = MSG_ID_{{ msg.name | upper }};
+    {% for field in msg.fields %} {% if field.type == 'char*' %} strncpy((char*)&lmsg->payload[{{ field.start }}], msg->{{ field.name }}, sizeof(msg->{{ field.name }}) - 1);
+    lmsg.payload[{{ field.start }} + sizeof(msg->{{ field.name }}) - 1] = '\0'; // ensure null termination
+    {% else %}
+    memcpy(&lmsg.payload[{{ field.start }}], &msg->{{ field.name }}, sizeof({{ field.type }})); {% endif %} {% endfor %}
+    LMsg_calculate_checksum(&lmsg);
 
-    {% for field in msg.fields %}
-    {% if field.type == 'char *' %}
-    strncpy((char *)&lmsg->payload[{{ field.start }}], msg->{{ field.name }}, sizeof(msg->{{ field.name }}) - 1);
-    lmsg.payload[{{ field.start }} + sizeof(msg->{{ field.name }}) - 1] = '\0'; // ensure null t
+    return lmsg;
+}
+{% endfor %}
