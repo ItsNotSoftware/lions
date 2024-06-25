@@ -30,3 +30,4 @@ lionsc.egg-info/
 output/
 tests/output/*
 upload.sh
+**/.clangd
