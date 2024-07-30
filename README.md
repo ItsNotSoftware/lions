@@ -162,8 +162,8 @@ For each message type defined in the YAML files, the LIONS compiler generates a 
 
 Generated message classes examples:
 
--   [C](https://github.com/ItsNotSoftware/lions/blob/main/examples/c/generated_code/my_messages_lmsg.h)
--   [C++](https://github.com/ItsNotSoftware/lions/blob/main/examples/c%2B%2B/generated_code/my_messages_lmsg.hpp)
+-   [C](https://github.com/ItsNotSoftware/lions/blob/main/examples/c/generated_code)
+-   [C++](https://github.com/ItsNotSoftware/lions/blob/main/examples/c%2B%2B/generated_code)
 -   [JavaScript](https://github.com/ItsNotSoftware/lions/blob/main/examples/js/generated_code/my_messages_lmsg.js)
 -   [TypeScript](https://github.com/ItsNotSoftware/lions/blob/main/examples/ts/generated_code/my_messages_lmsg.ts)
 -   [Python](https://github.com/ItsNotSoftware/lions/blob/main/examples/python/generated_code/my_messages_lmsg.py)
