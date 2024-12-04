@@ -72,7 +72,7 @@ LIONS uses `.lmsg.yaml` files to define message specifications for IoT networks.
 
 -   **Name of the Message**: Unique identifier for each message type.
 -   **ID**: Identifier unique to each message ()can be given in hexadecimal, decimal, or binary.
--   **Period**: Used to generate a constant for message scheduling (implementation needs to be done by teh user).
+-   **Period**: Used to generate a constant for message scheduling (implementation needs to be done by the user).
 -   **Description**: Brief explanation of the message's purpose.
 -   **Fields**:
     -   **Type**: Data type (`float`, `int16_t`, `string`, etc.).
